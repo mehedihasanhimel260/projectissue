@@ -1,0 +1,92 @@
+
+### **Step 1: Prepare the Files**
+
+1. Log in to the **source cPanel** (where your project is currently hosted).
+2. Open **File Manager**.
+3. Navigate to your project directory (usually in `public_html` or a subdirectory).
+4. Select all the project files.
+5. Click **Compress** and choose `.zip`.
+6. Download the zipped file to your computer.
+
+---
+
+### **Step 2: Export the Database**
+
+1. In the **source cPanel**, open **phpMyAdmin**.
+2. Select the database your Laravel project is using.
+3. Click the **Export** tab.
+4. Choose **Quick Export** and format **SQL**.
+5. Download the `.sql` file.
+
+---
+
+### **Step 3: Upload to the New cPanel**
+
+1. Log in to the **destination cPanel** (new hosting).
+2. Open **File Manager**.
+3. Upload the zipped file to the desired location (e.g., `public_html`).
+4. Extract the `.zip` file.
+
+---
+
+### **Step 4: Import the Database**
+
+1. In the new cPanel, go to **MySQL Databases**.
+2. Create a **new database**.
+3. Create a **new database user** and assign it to the database with **All Privileges**.
+4. Open **phpMyAdmin** on the new cPanel.
+5. Select the newly created database.
+6. Go to the **Import** tab.
+7. Upload and import the `.sql` file you exported earlier.
+
+---
+
+### **Step 5: Update Laravel Configuration**
+
+1. In File Manager, open your Laravel project folder.
+
+2. Find the `.env` file.
+
+3. Update the database settings with your **new database name, username, and password**. Example:
+
+   ```
+   DB_CONNECTION=mysql
+   DB_HOST=127.0.0.1
+   DB_PORT=3306
+   DB_DATABASE=new_database_name
+   DB_USERNAME=new_database_user
+   DB_PASSWORD=new_password
+   ```
+
+### **Step 6: Test the Site**
+
+The issue occurred because the bootstrap/cache folder was updated or the hosting was changed, which requires domain verification. Please follow the steps below to verify your domain:
+
+Access your File Manager and locate the .env file in your project root.
+
+Open the .env file and note the following credentials:
+
+DB_DATABASE – copy this value
+
+DB_USERNAME – copy this value
+
+DB_PASSWORD – copy this value
+
+Use these credentials during the setup process at:
+http://Your-Domain/setup-product
+
+For a step-by-step video guide, you can follow this tutorial:
+https://vimeo.com/1081202430/0c1cfe572d
+
+### **Step 7: Test the Site**
+
+1. Visit your domain on the new hosting.
+2. Check if everything is working properly (database connection, assets, routes, etc.).
+
+---
+
+👉 That’s it! Your Laravel project should now be fully moved to the new cPanel.
+
+
+
+If you would like us to handle this for you, please note that it is a paid service. For pricing and additional information, kindly submit a ticket through this department: https://bugfinder.net/user/create-ticket/customization

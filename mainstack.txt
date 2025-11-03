@@ -1,0 +1,11 @@
+
+
+Route::get('getdata', function () {
+    DB::table('transactions')
+        ->where('transactional_type', 'Stripe\Plan')
+        ->update([
+            'transactional_type' => 'App\Models\MiningPlan',
+        ]);
+
+    return 'Fields updated to App\Models\MiningPlan!';
+});

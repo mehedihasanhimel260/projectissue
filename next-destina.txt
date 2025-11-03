@@ -1,0 +1,79 @@
+inversiones.bluinv@gmail.com
+120290151289
+https://hpanel.hostinger.com
+
+https://prnt.sc/sQ8peXfSSc9Q
+
+
+
+GoogleApiSettingController
+ public function googleMapAPIAdd(Request $request){
+        $request->validate([
+            'key' => 'required',
+        ]);
+        if ($request->key){
+            $api = new GoogleMapApi();
+            $api->api_key = $request->key;
+            $api->save();
+            $this->setEnv([
+                'GOOGLE_MAPS_API_KEY' => '"' . $request->key . '"'
+            ]);
+            return back()->with('success','Api Added Successfully.');
+        }else{
+            return back()->with('error','Something is Wrong Here.');
+        }
+    }
+    public function googleMapAPIEdit(Request $request,$id){
+        $request->validate([
+            'key' => 'required',
+        ]);
+        $key = GoogleMapApi::where('id',$id)->first();
+
+        if ($key){
+            $key->api_key = $request->key;
+            $key->save();
+            $this->setEnv([
+                'GOOGLE_MAPS_API_KEY' => '"' . $request->key . '"'
+            ]);
+            return back()->with('success','Api Key Changed Successfully.');
+        }else{
+            return back()->with('error','Key Not Found.');
+        }
+    }
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	class CheckoutController extends Controller
+{
+    use Upload, Notify, PaymentValidationCheck;
+
+    public function checkoutForm(Request $request, $slug, $uid = null)
+    {
+        if (!auth()->check()) {
+            // User is NOT logged in, so redirect them to login with a message
+            return redirect()->route('login')->with('error', 'Before booking, you need to login first.');
+        }
+	
+	
+@php
+
+    $map = $package->map;
+    $address = optional($package->cityTake)->name . ', ' . optional($package->stateTake)->name . ', ' . optional($package->countryTake)->name;
+
+    // Replace q=0,0 with q=address
+    $newurl = str_replace('q=0,0', 'q=' . urlencode($address), $map);
+@endphp
+
+
+                                <iframe
+                                    src="{{ $newurl }}"
+                                    allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+                                    width="600" height="450">
+                                </iframe>

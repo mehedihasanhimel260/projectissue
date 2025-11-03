@@ -1,0 +1,1 @@
+you need to configure Set up Firebase configuration for push notifications. and Set up the configuration for Pusher to enable in-app notifications. Then it will work fine, 

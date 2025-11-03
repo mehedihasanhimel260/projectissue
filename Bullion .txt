@@ -1,0 +1,155 @@
+//user panel
+
+<script>
+    $(document).ready(function () {
+        const timeZone = "{{ basicControl()->time_zone }}"; // Get the time zone from PHP
+
+        function updateTime() {
+            $('.next-payment').each(function() {
+                const nextPaymentTime = new Date($(this).data('payment'));
+
+                if (nextPaymentTime) {
+                    const now = new Date();
+                    const localTime = new Date(now.toLocaleString("en-US", { timeZone: timeZone }));
+                    let timeDifference = nextPaymentTime - localTime;
+
+                    if (timeDifference > 0) {
+                        const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+                        timeDifference -= days * 1000 * 60 * 60 * 24;
+                        const hours = Math.floor(timeDifference / (1000 * 60 * 60));
+                        timeDifference -= hours * 1000 * 60 * 60;
+                        const minutes = Math.floor(timeDifference / (1000 * 60));
+                        timeDifference -= minutes * 1000 * 60;
+                        const seconds = Math.floor(timeDifference / 1000);
+
+                        $(this).text(`${days}d ${hours}h ${minutes}m ${seconds}s`);
+                    } else {
+                        $(this).html(`<span class="text-danger">Time has passed</span>`);
+                    }
+                }
+            });
+        }
+
+        // Initial call to set up the time
+        updateTime();
+        // Update every second
+        setInterval(updateTime, 1000);
+    });
+</script>
+//for admin panel
+
+<script>
+    $(document).ready(function() {
+        // Handle terminate button click
+        $(document).on('click', '.terminate_btn', function() {
+            $('#terminateRoute').attr('action', $(this).data('route'));
+        });
+
+        // Handle delete button click
+        $(document).on('click', '.deleteBtn', function() {
+            $('#setRoute').attr('action', $(this).data('route'));
+        });
+
+        // Initial tooltip initialization
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+        var tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl);
+        });
+
+        // Reinitialize tooltips after every AJAX call
+        $(document).ajaxComplete(function() {
+            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+            var tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl);
+            });
+        });
+
+        // Initialize HS components
+        HSCore.components.HSFlatpickr.init('.js-flatpickr');
+        HSCore.components.HSTomSelect.init('.js-select', {
+            maxOptions: 250,
+        });
+        HSCore.components.HSDatatables.init($('#datatable'), {
+            processing: true,
+            serverSide: true,
+            ordering: false,
+            ajax: {
+                url: "{{ route('admin.invest.history.list') }}",
+            },
+            columns: [
+                {data: 'trx_id', name: 'trx_id'},
+                {data: 'name', name: 'name'},
+                {data: 'plan', name: 'plan'},
+                {data: 'return', name: 'return'},
+                {data: 'received_amount', name: 'received_amount'},
+                {data: 'next_payment', name: 'next_payment'},
+                {data: 'action', name: 'action'},
+            ],
+            language: {
+                zeroRecords: `<div class="text-center p-4">
+                    <img class="dataTables-image mb-3" src="{{ asset('assets/admin/img/oc-error.svg') }}" alt="Image Description" data-hs-theme-appearance="default">
+                    <img class="dataTables-image mb-3" src="{{ asset('assets/admin/img/oc-error-light.svg') }}" alt="Image Description" data-hs-theme-appearance="dark">
+                    <p class="mb-0">No data to show</p>
+                    </div>`,
+                processing: `<div><div></div><div></div><div></div><div></div></div>`
+            },
+        });
+
+        // Prevent DataTables from displaying error alerts
+        $.fn.dataTable.ext.errMode = 'throw';
+
+        // Get the time zone from PHP
+        const timeZone = "{{ basicControl()->time_zone }}";
+
+        // Update time function
+        function updateTime() {
+            $('.next-payment').each(function() {
+                const nextPaymentTime = new Date($(this).data('payment'));
+
+                if (nextPaymentTime) {
+                    const now = new Date();
+                    const localTime = new Date(now.toLocaleString("en-US", { timeZone: timeZone }));
+                    let timeDifference = nextPaymentTime - localTime;
+
+                    if (timeDifference > 0) {
+                        const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+                        timeDifference -= days * 1000 * 60 * 60 * 24;
+                        const hours = Math.floor(timeDifference / (1000 * 60 * 60));
+                        timeDifference -= hours * 1000 * 60 * 60;
+                        const minutes = Math.floor(timeDifference / (1000 * 60));
+                        timeDifference -= minutes * 1000 * 60;
+                        const seconds = Math.floor(timeDifference / 1000);
+
+                        $(this).text(`${days}d ${hours}h ${minutes}m ${seconds}s`);
+                    } else {
+                        $(this).html(`<span class="text-danger">Time has passed</span>`);
+                    }
+                }
+            });
+        }
+
+        // Initial call to set up the time
+        updateTime();
+        // Update every second
+        setInterval(updateTime, 1000);
+    });
+</script>
+
+
+app/Models/InvestHistory.php
+    public function nextReturn()
+    {
+        if ($this->return_period_type == "Hour") {
+            return Carbon::parse(now())->addHours((int) $this->return_period);
+        
+        } elseif ($this->return_period_type == "Day") {
+            return Carbon::parse(now())->addDays((int) $this->return_period);
+        
+        } elseif ($this->return_period_type == "Month") {
+            return Carbon::parse(now())->addMonths((int) $this->return_period);
+        
+        } elseif ($this->return_period_type == "Year") {
+            return Carbon::parse(now())->addYears((int) $this->return_period);
+        }
+
+    }

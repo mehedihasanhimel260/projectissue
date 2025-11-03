@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+</head>
+<body style="font-family: Arial, sans-serif; color: #333333; background-color: #f8f8f8; padding: 20px;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="max-width: 600px; margin: auto; background-color: #ffffff; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); overflow: hidden;">
+    <!-- Header -->
+    <tr>
+      <td style="text-align: center; padding: 30px 20px 10px; background-color: #C4E5DC;">
+        <img src="https://jmkstemcell.ai/assets/upload/logo/FNdjdUeUs7gLVm2eDr24iMTDJOmyHJ.webp" alt="Agrocash Logo" style="max-width: 150px;">
+      </td>
+    </tr>
+
+    <!-- Body -->
+    <tr>
+      <td style="padding: 20px;">
+        <p>Hello [[name]],</p>
+
+        <p>[[message]]</p>
+
+        <p style="margin-top: 40px;">Sincerely,<br><strong style="text-transform: capitalize;">comapny name</strong></p>
+      </td>
+    </tr>
+
+    <!-- Footer -->
+    <tr>
+      <td style="background-color: #132144; text-align: center; font-size: 12px; color: #ffffff; padding: 15px 10px;">
+        2025 © All Rights Reserved
+      </td>
+    </tr>
+  </table>
+</body>
+</html>
+
+
+
+MAIL_MAILER=smtp
+MAIL_HOST=smtp-relay.brevo.com
+MAIL_PORT=587
+MAIL_USERNAME=94a826001@smtp-brevo.com
+MAIL_PASSWORD="GAhVc8B7fytpmEws"
+MAIL_ENCRYPTION="tls"
+MAIL_FROM_ADDRESS=suporte@seguidores.app.br
+MAIL_FROM_NAME="Suporte Seguidores.app.br"
+
+
+
+MAIL_MAILER=smtp
+MAIL_HOST="smtp.hostinger.com"
+MAIL_PORT="465"
+MAIL_USERNAME="noreply@ezstore.in"
+MAIL_PASSWORD="Deepan2003@"
+MAIL_FROM_ADDRESS="noreply@ezstore.in"
+MAIL_FROM_NAME="Ez Store Official"
+
+
+
+
+MAIL_MAILER=smtp
+MAIL_HOST=smtp.gmail.com
+MAIL_PORT=465
+MAIL_USERNAME="bugfinder36@gmail.com"
+MAIL_PASSWORD="uhgw kcde jyfl szoa"
+MAIL_ENCRYPTION=ssl
+MAIL_FROM_ADDRESS="bugfinder36@gmail.com"
+MAIL_FROM_NAME="BugFinder"
+
+Your account info@omnimarkets.company has been setup. In your e-mail program, use:
+Username:	info@omnimarkets.company
+Password:	4M3rd7qzq453xzCrAP9S
+POP/IMAP Server:	mail.omnimarkets.company
+SMTP Server:	mail.omnimarkets.company port 587

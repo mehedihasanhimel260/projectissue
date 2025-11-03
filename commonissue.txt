@@ -1,0 +1,29 @@
+
+
+    public function setEnv($value)
+    {
+        $envPath = base_path('.env');
+        $env = file($envPath);
+        foreach ($env as $env_key => $env_value) {
+            $entry = explode("=", $env_value, 2);
+            if (count($entry) < 2) {
+                continue;
+            }
+            $key = trim($entry[0]);
+            $oldValue = trim($entry[1]);
+            if (array_key_exists($key, $value)) {
+                $newValue = trim($value[$key]);
+                if (preg_match('/^"(.*)"$/', $newValue, $matches)) {
+                    $newValue = $matches[1]; 
+                }
+                if (empty($newValue) || preg_match('/\s/', $newValue)) {
+                    $newValue = '"' . $newValue . '"';
+                }
+                $env[$env_key] = $key . "=" . $newValue . "\n";
+            }
+        }
+        file_put_contents($envPath, implode("", $env));
+    }
+	
+	
+	

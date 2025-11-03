@@ -1,0 +1,61 @@
+
+accounts/app/Http/Controllers/Api/V1/AuthController.php
+
+
+	public function loginUser(Request $request)
+	{
+	    
+    $validateUser = Validator::make($request->all(), [
+        'username' => 'required|string',
+        'password' => 'required|string'
+    ]);
+
+    if ($validateUser->fails()) {
+        return response()->json(
+            $this->withErrors(collect($validateUser->errors())->collapse()[0])
+        );
+    }
+
+    try {
+        $loginField = filter_var($request->username, FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
+
+     
+        if (!Auth::attempt([$loginField => $request->username, 'password' => $request->password])) {
+            return response()->json(
+                $this->withErrors('Username/Email & Password do not match with our records.')
+            );
+        }
+
+
+        $user = User::where($loginField, $request->username)->first();
+
+        if (!$user) {
+            return response()->json(
+                $this->withErrors('Record not found')
+            );
+        }
+
+
+        if (!in_array($user->type, getAllowedUserTypes())) {
+            return response()->json(
+                $this->withErrors("Login restricted for $user->type.")
+            );
+        }
+
+
+        $user->two_fa_verify = ($user->two_fa == 1) ? 0 : 1;
+        $user->save();
+
+
+			return response()->json([
+				'status' => 'success',
+				'message' => 'User Logged In Successfully',
+				'token' => $user->createToken("API TOKEN")->plainTextToken
+			]);
+
+		} catch (\Throwable $th) {
+			return response()->json($this->withErrors($th->getMessage()));
+		}
+	}
+	
+	----------------------------

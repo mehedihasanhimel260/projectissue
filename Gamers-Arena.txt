@@ -1,0 +1,23 @@
+
+file path: .env
+https://prnt.sc/jgpcV9yme7nk
+make "FTP" to "local"
+
+update: 
+FILESYSTEM_DRIVER="local"
+FILESYSTEM_DISK=local
+
+
+use Illuminate\Support\Facades\DB;
+
+Route::get('getdata', function () {
+    DB::table('basic_controls')->update([
+        'admin_dark_mode_logo_driver' => 'local',
+        'logo_driver' => 'local',
+        'favicon_driver' => 'local',
+        'admin_logo_driver' => 'local',
+    ]);
+
+    return 'Fields updated to local!';
+});
+ SellPost::doesntHave('user')->delete();

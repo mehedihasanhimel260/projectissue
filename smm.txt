@@ -1,0 +1,494 @@
+admin login controller r forgetpassword controller
+admin model er modde prefix bosbe
+solution
+ protected $redirectTo;
+
+    public function __construct()
+    {
+        $this->redirectTo = basicControl()->admin_prefix . '/dashboard';
+    }
+	
+	
+	
+	app/Http/Controllers/Admin/OrderController.php
+	
+	//new code
+	    public function update(OrderUpdateRequest $request, $id)
+    {
+        $data = $request->validated();
+        try {
+            $order = Order::where('id', $id)->firstOr(function () {
+                throw new \Exception('Order is not available.');
+            });
+    
+            if (isset($order->refilled_at) && $data['refill_status']) {
+                $refill_status = $data['refill_status'];
+            }
+    
+            $this->statusChange($request, $id);
+    
+            $response = $order->update([
+                'start_counter' => $data['start_counter'] == '' ? null : $data['start_counter'],
+                'link' => $data['link'],
+                'remains' => $data['remains'] == '' ? null : $data['remains'],
+                'refill_status' => $refill_status ?? null,
+                'reason' => $data['reason']
+            ]);
+    
+            throw_if(!$response, 'Something went wrong, Please try again.');
+            return back()->with('success', 'Order successfully updated');
+        } catch (\Exception $e) {
+            return back()->with('error', $e->getMessage());
+        }
+    }
+	//old code 
+	
+    public function update(OrderUpdateRequest $request, $id)
+    {
+ 
+        $data = $request->validated();
+        try {
+            $order = Order::where('id', $id)->firstOr(function () {
+                throw new \Exception('Order is not available.');
+            });
+            if (isset($order->refilled_at) && $data['refill_status']) {
+                $refill_status = $data['refill_status'];
+            }
+            $response = $order->update([
+                'start_counter' => $data['start_counter'] == '' ? null : $data['start_counter'],
+                'link' => $data['link'],
+                'remains' => $data['remains'] == '' ? null : $data['remains'],
+                'status' => $data['status'],
+                'refill_status' => $refill_status ?? null,
+                'reason' => $data['reason']
+            ]);
+
+            throw_if(!$response, 'Something went wrong, Please try again.');
+            return back()->with('success', 'Order successfully updated');
+        } catch (\Exception $e) {
+            return back()->with('error', $e->getMessage());
+        }
+    }
+	
+	app/Http/Controllers/User/OrderController.php
+	old code 
+	
+	        // $categories = Category::with(['service' => function ($query) {
+        //     return $query->where('service_status', 1)->userRate();
+        // }])
+        //     ->whereHas('service', function ($query) {
+        //         $query->whereHas('provider', function ($q) {
+        //             $q->where('status', 1);
+        //         })->orWhereDoesntHave('provider');
+        //     })
+        //     ->where('status', 1)
+        //     ->whereHas('service', function ($query) {
+        //         $query->where('service_status', 1)
+        //             ->whereHas('provider', function ($query) {
+        //                 $query->where('status', 1);
+        //             });
+        //     })
+        //     ->when($request->social_media_id != 0, function ($query) use ($request) {
+        //         return $query->where('social_media_id', $request->social_media_id);
+        //     })->get();
+		
+		
+		new code 
+		----------------
+		  $categories = Category::with(['service' => function ($query) {
+            return $query->where('service_status', 1)->userRate();
+        }])
+        ->where('status', 1)
+        ->whereHas('service', function ($query) {
+            $query->where('service_status', 1)
+                ->whereHas('provider', function ($query) {
+                    $query->where('status', 1);
+                })
+                ->orWhereDoesntHave('provider');
+        })
+        ->when($request->social_media_id != 0, function ($query) use ($request) {
+            return $query->where('social_media_id', $request->social_media_id);
+        })
+        ->get();
+
+
+
+
+app\Http\Controllers\Admin\OrderController.php
+
+
+
+
+
+Route::get('/set-app-url', function () {
+    $host = request()->getScheme() . '://' . request()->getHost();
+    app(\App\Services\BasicService::class)->setEnv(['APP_URL' => $host]);
+    return redirect('/');
+});
+
+
+
+
+
+
+    public function statusChange(Request $request, $id)
+    {
+        $request->validate([
+            'status' => 'required',
+        ]);
+
+        try {
+            $order = Order::with('users')->findOrFail($id);
+   
+            $order->update([
+                'status' => $request->status
+            ]);
+            if ($order->status == 'refunded' && ($order->remains != 0 || $order->remains == null)) {
+                $perOrder = $order->price / $order->quantity;
+                if($order->remains != null){
+                      $getBackAmount = $order->remains * $perOrder;
+                }else{
+                     $getBackAmount = $order->price;
+                }
+                $updatebalance=optional($order->users)->balance + $getBackAmount;
+                optional($order->users)->update([
+                    'balance' =>$updatebalance
+                ]);
+
+                Transaction::create([
+                    'transactional_id' => $order->id,
+                    'transactional_type' => Order::class,
+                    'user_id' => $order->users->id,
+                    'trx_type' => '+',
+                    'amount' => $getBackAmount,
+                    'remarks' => 'Refunded order on #' . $order->id,
+                    'charge' => 0
+                ]);
+            
+            }
+            return back()->with('success', 'Order status change successfully.');
+        } catch (\Exception $e) {
+            return back()->with('error', $e->getMessage());
+        }
+    }
+	
+	
+	
+	
+Currently, there is no dynamic method available to deactivate the PWA (Progressive Web App) functionality. However, you can manually disable it by removing the relevant code.
+
+To deactivate the PWA feature, please delete all related code from the following file(s), depending on the theme(s) you are using:
+
+resources/views/themes/minimal/partials/pwa.blade.php
+resources/views/themes/deep_blue/partials/pwa.blade.php
+resources/views/themes/dark_voilet/partials/pwa.blade.php
+resources/views/themes/light_green/partials/pwa.blade.php
+resources/views/themes/light_orange/partials/pwa.blade.php
+resources/views/themes/dark_voilet/user/partials/pwa.blade.php
+resources/views/themes/light_green/user/partials/pwa.blade.php
+
+Please ensure the modifications are done carefully to avoid affecting other parts of the application. Let us know if you need assistance with this process.
+
+ DB::table('services')->update(['drip_feed' => 0]);
+ 
+ 
+ 
+ 
+ 
+ 
+    // Delete all files in storage/framework/cache/data except .gitignore
+    $cacheDataPath = storage_path('framework/cache/data');
+    if (is_dir($cacheDataPath)) {
+        $files = scandir($cacheDataPath);
+        foreach ($files as $file) {
+            if ($file === '.' || $file === '..' || $file === '.gitignore') {
+                continue;
+            }
+            $fullPath = $cacheDataPath . DIRECTORY_SEPARATOR . $file;
+            if (is_file($fullPath)) {
+                @unlink($fullPath);
+            } elseif (is_dir($fullPath)) {
+                // Recursive delete subfolders
+                $iterator = new \RecursiveIteratorIterator(
+                    new \RecursiveDirectoryIterator($fullPath, \RecursiveDirectoryIterator::SKIP_DOTS),
+                    \RecursiveIteratorIterator::CHILD_FIRST
+                );
+                foreach ($iterator as $item) {
+                    $item->isDir() ? rmdir($item) : unlink($item);
+                }
+                rmdir($fullPath);
+            }
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    public function listOfApiServices($id): \Illuminate\Http\JsonResponse
+    {
+
+        $apiProvider = ApiProvider::where('id', $id)->firstOr(function () {
+            throw new \Exception('API provider is not available.');
+        });
+
+        $apiServiceLists = Cache::remember('api_service_lists', 500, function () use ($apiProvider) {
+            $response = Http::post($apiProvider->url, [
+                'key' => $apiProvider->api_key,
+                'action' => 'services',
+            ]);
+            return $response->json();
+        });
+        return DataTables::of(collect($apiServiceLists))
+            ->addColumn('checkbox', function ($item) {
+                return '<input type="checkbox" id="chk-' . $item['service'] . '"
+                               class="form-check-input row-tic tic-check" name="check" value="' . $item['service'] . '"
+                               data-id="' . $item['service'] . '">';
+            })
+            ->addColumn('service_id', function ($item) {
+                return $item['service'];
+            })
+            ->addColumn('name', function ($item) {
+                return Str::limit($item['name'], 30);
+            })
+            ->addColumn('category', function ($item) {
+                return $item['category'];
+            })
+            ->addColumn('price', function ($item) use ($apiProvider) {
+                return $item['rate'] . " " . ($apiProvider->currency ?? 'USD');
+            })
+            ->addColumn('status', function ($item) {
+                $dripFeed = $item['dripfeed'] ?? $item['drip_feed'] ?? false; 
+                if ($dripFeed) {
+                    return '<span class="badge bg-soft-success text-success">
+                                <span class="legend-indicator bg-success"></span>' . trans("Active") . '
+                            </span>';
+                } else {
+                    return '<span class="badge bg-soft-danger text-danger">
+                                <span class="legend-indicator bg-danger"></span>' . trans("Inactive") . '
+                            </span>';
+                }
+            })
+            ->addColumn('action', function ($item) use ($apiProvider) {
+                $importRoute = route('admin.api.service.import', [
+                    'id' => $item['service'],
+                    'name' => $item['name'],
+                    'category' => $item['category'],
+                    'rate' => $item['rate'],
+                    'min' => $item['min'],
+                    'max' => $item['max'] ?? null,
+                    'dripfeed' => $item['dripfeed'] ?? $item['drip_feed'] ?? 0,
+                    'description' => $item['description'] ?? $item['desc'] ?? '', // <-- description include
+                    'provider' => $apiProvider->id
+                ]);
+                return '<button type="button" class="btn btn-white btn-sm import-single"
+                            data-bs-toggle="modal" data-bs-target="#addServiceModal" data-route="' . $importRoute . '">
+                        <i class="bi bi-plus me-1"></i> ' . trans("Add Service") . '
+                      </button>';
+            })
+            ->rawColumns(['action', 'checkbox', 'category', 'price', 'status', 'description'])
+            ->make(true);
+
+    }
+
+
+    public function import(Request $request): \Illuminate\Http\RedirectResponse
+    {
+        try {
+            $req = $request->all();
+
+            $apiProvider = ApiProvider::where('id', $req['provider'])->firstOr(function () {
+                throw new \Exception('API provider is not available.');
+            });
+
+            $categoryExists = Category::where('category_title', $req['category'])->exists();
+            $socialMediaId = $this->findSocialMedia($req['name'], $req['category']);
+
+            if (!$categoryExists && empty($req['category_id'])) {
+                Category::create([
+                    'social_media_id' => $socialMediaId->id ?? null,
+                    'category_title' => $req['category'],
+                    'status' => 1
+                ]);
+            }
+
+            $serviceExists = Service::where('api_service_id', $req['id'])->exists();
+            $increased_price = ($req['rate'] * $req['price_percentage_increase']) / 100;
+
+            if (!$serviceExists) {
+                if (empty($req['category_id'])) {
+                    $idCat = Category::where('category_title', $req['category'])->first()->id;
+                }
+                Service::create([
+                    'service_title' => $req['name'],
+                    'category_id' => empty($req['category_id']) ? $idCat : $req['category_id'],
+                    'min_amount' => $req['min'],
+                    'max_amount' => $req['max'],
+                    'original_price' => $req['rate'] * $apiProvider->conversion_rate,
+                    'price' => ($req['rate'] + $increased_price) * $apiProvider->conversion_rate,
+                    'price_percentage_increase' => $req['price_percentage_increase'],
+                    'service_status' => 1,
+                    'api_provider_id' => $req['provider'],
+                    'api_service_id' => $req['id'],
+                    'description' => $req['description'] ?? '',
+                    'drip_feed' => $req['dripfeed'] ?? 0,
+                    'api_provider_price' => $req['rate'],
+                    'refill' => $req['refill'] ?? 0
+                ]);
+
+                return redirect()->route('admin.service.index')->with('success', 'Service imported successfully.');
+            } else {
+                return redirect()->route('admin.service.index')->with('success', 'Already have this service.');
+            }
+        } catch (\Exception $exp) {
+            return back()->with('error', $exp->getMessage());
+        }
+    }
+
+    public function importMultiple(Request $request): \Illuminate\Http\RedirectResponse
+    {
+        try {
+            $req = $request->all();
+            $apiProvider = ApiProvider::where('id', $req['provider'])->firstOr(function () {
+                throw new \Exception('API provider is not available.');
+            });
+
+            $response = Http::post($apiProvider->url, [
+                'key' => $apiProvider->api_key,
+                'action' => 'services',
+            ]);
+
+            $apiServicesData = $response->json();
+
+            if (!$apiServicesData) {
+                throw new \Exception('Please Check your API URL Or API Key.');
+            }
+
+            if ($request->import_quantity == 'selectItem') {
+                $getService = explode(',', $request->select_service);
+                $apiServicesData = collect($apiServicesData)->whereIn('service', $getService)->values();
+            }
+
+            $count = 0;
+            foreach ($apiServicesData as $apiService) {
+
+                $socialMediaId = $this->findSocialMedia($apiService['name'], $apiService['category']);
+                $categoryExists = Category::where('category_title', $apiService['category'])->exists();
+
+                if (!$categoryExists) {
+                    Category::create([
+                        'social_media_id' => $socialMediaId->id ?? null,
+                        'category_title' => $apiService['category'],
+                        'status' => 1
+                    ]);
+                }
+
+                $serviceExists = Service::where('api_service_id', $apiService['service'])->exists();
+
+                if (!$serviceExists) {
+
+                    $idCat = Category::where('category_title', $apiService['category'])->first()->id ?? null;
+                    $increased_price = ($apiService['rate'] * $req['price_percentage_increase']) / 100;
+                    $description = $apiService['desc'] ?? $apiService['description'] ?? null;
+
+                    Service::create([
+                        'service_title' => $apiService['name'],
+                        'category_id' => $idCat,
+                        'min_amount' => $apiService['min'],
+                        'max_amount' => $apiService['max'],
+                        'original_price' => $apiService['rate'] * $apiProvider->conversion_rate,
+                        'price' => ($apiService['rate'] + $increased_price) * $apiProvider->conversion_rate,
+                        'service_status' => 1,
+                        'price_percentage_increase' => $req['price_percentage_increase'],
+                        'api_provider_id' => $req['provider'],
+                        'api_service_id' => $apiService['service'],
+                        'drip_feed' => $apiService['dripfeed'] ?? $apiService['drip_feed'],
+                        'api_provider_price' => $apiService['rate'],
+                        'description' => $req['description'] ?? '',
+                        'refill' => $apiService['refill'] ?? null,
+                        'description' => $description ?? null
+                    ]);
+
+                }
+                $count++;
+
+                if ($req['import_quantity'] == 'all') {
+                    continue;
+                } elseif ($req['import_quantity'] == $count) {
+                    break;
+                } elseif ($req['import_quantity'] == 'selectItem') {
+                    continue;
+                }
+            }
+
+            return redirect()->route('admin.service.index')->with('success', 'Services Imported Successfully');
+        } catch (\Exception $exp) {
+            return back()->with('error', $exp->getMessage());
+        }
+    }
+
+
+
+
+    protected function handleDatabaseException(\Exception $exception)
+    {
+        switch ($exception->getCode()) {
+            case 404:
+                abort(404);
+            case 403:
+                abort(403);
+            case 401:
+                abort(401);
+            case 503:
+                redirect()->route('maintenance')->send();
+                break;
+            case "42S02":
+                die($exception->getMessage());
+            case 1045:
+                die("Access denied. Please check your username and password.");
+            case 1044:
+                die("Access denied to the database. Ensure your user has the necessary permissions.");
+            case 1049:
+                die("Unknown database. Please verify the database name exists and is spelled correctly.");
+            case 2002:
+                die("Unable to connect to the MySQL server. Check the database host and ensure the server is running.");
+            default:
+            $viewName = $exception->getMessage();
+            preg_match('/View \[(.*?)\] not found/', $viewName, $matches);
+            $sectionName = $matches[1] ?? 'unknown';
+            $sectionParts = explode('.', $sectionName);
+            $sectionDisplay = end($sectionParts);
+
+            $customMessage = "The content for the '{$sectionDisplay}' section is missing. "
+                . "Please visit the admin panel and add content for this section to display it correctly.";
+            die($customMessage);
+
+        }
+    }
+	
+	
+	  if (!$user) {
+        continue; // skip to next order
+    }

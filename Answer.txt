@@ -1,0 +1,410 @@
+
+ZyloChat 
+Coinectra 
+Travel Advaizar
+Swift Send 
+BillPay 
+Foody Friend
+Finounce
+EX-RATE 
+Gamers Arena 
+Prophecy 
+
+It will be easier to understand if you refer to the image :https://prnt.sc/tXt84mG50YN0
+The issue with the mail functionality was due to the cron job not being configured. I have now set it up properly. You can refer to the video (https://youtu.be/tGg5y-Vbi9g) for details. It should be working correctly now.
+
+In English, make professional sentences better for my essay: 
+
+Could you please provide access to your hosting server so I can investigate and resolve the issue?
+Our office hours have ended, and Friday is our weekend. We will review your issue on Saturday. A developer has been assigned to investigate the problem, so we kindly ask for your patience.
+
+
+
+You will need to install the script on a new domain.
+
+For step-by-step guidance on installation and configuration, please refer to our documentation here:
+👉 Installation Guide: https://docs.bugfinder.net/list-place/installation
+
+If you would like us to handle the installation for you, please note that installation and configuration are chargeable services. To proceed, kindly create a custom ticket through the following link:
+👉 Create Custom Ticket:https://bugfinder.net/user/create-ticket/customization
+
+Our team will then provide you with the cost details and any additional information required.
+
+
+Additionally, your support period expired on 13/03/2025.
+As per Envato’s policy, we’re unable to provide technical assistance unless your support period is active.
+Kindly extend your support period to continue receiving help and updates from our team.
+
+
+
+
+
+Could you please provide access to your hosting server so I can investigate and resolve the issue?
+
+Kindly share your hosting server credentials, allowing me to check and address the issue promptly.
+
+
+To troubleshoot and fix the issue, may I request access to your hosting server?
+
+If possible, please grant me access to your hosting server so I can look into and resolve the issue.
+
+
+
+
+Your server may be blocking HTML content in emails. To resolve this, try using plain text instead. For a step-by-step guide, please watch this video: https://youtu.be/MHd-xKkF5Dc
+
+
+
+Sorry for the delay as official activities were closed due to a government holiday.
+
+we assigned our developer to check your issue, please give us time
+
+we are cheking your issue but your support end 
+You need Extend your support from here https://prnt.sc/1vTIaSvnj_0_
+
+Tawk Configuration you need add Your Tawk code and Widget ID copy code like this image 
+https://prnt.sc/8iEMtdoFOqbj
+
+Bug Finder's support hours are GMT+6, from 10:00 AM to 6:00 PM.
+
+We’ve resolved the issue—
+Please let me know if you encounter any further difficulties. I’ll be happy to assist you in resolving them.
+Also, if you could take a moment to rate our service, it would be greatly appreciated. Your feedback helps us prioritize.You can update your rating here: https://prnt.sc/YmX3YrhGvKiq
+
+Please let me know if you encounter any further difficulties. I’ll be happy to assist you in resolving them. If possible, kindly share your cPanel access as well so I can help you fix the issues more efficiently.
+
+
+
+
+everything is working perfectly.
+If you’re satisfied with our support, we’d truly appreciate a 5-star rating. It helps us continue providing fast and effective assistance!
+
+
+For a solution to file permission issues, please refer to the following video: https://vimeo.com/1094294849/66b92c075c
+
+installation is not our responsibility  we checked Your username is not correct for the reason showing this problem Fixed your issue please check I will fix all your problems and give you a solution, We expect a 5star rating from you https://prnt.sc/YmX3YrhGvKiq
+
+
+Give me your Purchase code to identify you. Can you share your hosting server access so I can check and fix this issue?
+
+Can you give us access to the mail so we can fix it, bugfinder36@gmail.com
+Because we have so many tickets, we have to finish one and then look at the other,
+When we go to see your issue, we can't log in unless you are online.
+
+
+Bug Finder always puts serious effort into providing users with a fast and fulfilling response for every issue. However, due to different time zone problems, response time could take up to 24-48 hours from Sunday to Thursday and 48 hours over the weekends. Bug Finder’s time zone is GMT+6.
+
+
+please one ticket continue This ticket has been closed due to multiple tickets being opened for the same project issue. check another ticket  Ticket ID #56015832    
+
+The issue may be due to an incorrect database connection or a missing SQL file import. You can verify the setup yourself, and for guidance, please refer to this video: https://youtu.be/IR5trtbvX7A.
+
+Push notification Working on the latest version, will be updated very soon, please wait.
+
+
+Our office hours are over. We will look into your problem on Saturday. Friday is our weekend Okay.
+we assigned our developer to check your issue, please give us time
+
+
+Our office hours are over. We will look into your problem tomorrow. Okay.
+Our office hours are over today . tomorrow our gov holiday ,We will look into your problem next-working day . Okay.
+we assigned our developer to check your issue, please give us time
+ 
+Please let me know if you experience any difficulties. I’ll be happy to assist you in finding a solution.
+ 
+
+
+please check :  your server's PHP version and configuration. Ensure it meets the requirements specified by the software you're installing. Sometimes, missing PHP extensions (like mbstring, curl, or gd) can cause this error.
+you need PHP version 8.2 
+
+
+We need your availability to help test the payment issue.
+For quicker communication, please contact us via TawkTo during our office hours:
+🔗 https://prnt.sc/eHR785DHT4kB
+
+
+
+If there is any problem with your script during the support time, it is our responsibility to fix it. We are committed to fixing it.We have to look at many problems one by one. We can fix it if you give us cPanel access.Since you can give access. For fast communication knock me on talk to in our office time please https://prnt.sc/eHR785DHT4kB
+
+download this file and replace  phone number issue will be solved
+
+
+file path:app\Http\Controllers\Auth\RegisterController.php
+remove this code and save 
+, new PhoneLength($data['phone_code'])
+https://prnt.sc/9ef04ABw4E99
+
+We can't log in for otp We will send a request for access to MakeManage. If you accept it from your email, we will get access and be able to solve your problem.
+https://youtu.be/KP1P8CZmYJ0
+
+
+
+For guidance on installation and configuration, kindly refer to the following documentation:
+https://docs.bugfinder.net/prophecy/installation
+
+Installation and configuration are chargeable. If you want us to install it, create a custom ticket.https://bugfinder.net/user/create-ticket/customization
+
+
+
+https://vimeo.com/1096190128/44a24b7bc2?
+
+Install and configuration is chargeable, If you want us to install it, create a custom ticket.
+
+
+
+
+
+
+
+The features you mentioned can all be implemented, but for that, you will need a developer to create the customizations, which will be chargeable. If you want us to handle it, please create a custom ticket here: https://bugfinder.net/user/create-ticket/customization
+.
+
+From the ticket, you can discuss and find out the exact charges and any additional information.
+
+Please note that our department provides only technical support. We do not handle development or custom work directly.
+
+
+
+
+
+
+If any word is missing from translate, then you need to set that keyword and value from the language settings. https://vimeo.com/1095216865/240af121fd
+add content language base from manage content https://youtu.be/fWWZM3oqVIM
+
+
+
+
+
+Sorry for the Delay because yesterday was our weekend.
+we assigned our developer to check your issue, please give us time
+
+
+Regarding the image upload issue, please ensure the correct folder permissions are set.
+Navigate to the following directory: assets\upload, then select all folders within it and update their permissions as demonstrated in the screenshot below:
+https://prnt.sc/Qzsd628AxL93
+
+For additional guidance, you may also refer to this video tutorial:
+https://youtu.be/jtqWNAb43yE
+
+
+
+
+Please set your 
+DB_DATABASE=""
+DB_USERNAME=""
+DB_PASSWORD=""
+
+https://prnt.sc/I2JQwFWCL0HT
+
+then input sql file it will be work fine
+
+did you set cron? and time zone from the control panel, this problem was created for missing this 2 configured mistake. check this 2 docs  
+1. https://docs.bugfinder.net/hyip-pro/cron
+2. https://docs.bugfinder.net/hyip-pro/basic-control
+Please share cPanel to check from our end.
+then Let me know if there is any problem.I will give you a solution
+
+sorry for the Delay because yesterday was our weekend.
+
+
+file path: app/Http/Controllers/Admin/AdminProfileSettingController.php
+
+'password' => bcrypt($request->newPassword)
+to 
+'password' => bcrypt($request->password)
+
+https://prnt.sc/lLfqvTN-Mmht
+
+
+This issue commonly arises when using shared hosting. It often occurs if the maximum execution time is set below 300 seconds. If you are on a shared hosting plan, consider increasing the max execution time to 300 seconds. Making this adjustment typically resolves the problem. For a step-by-step guide, refer to this video: https://youtu.be/LQMIDUmsjfY
+
+You installed this domain next.leveluplegend.co, so the license is showing as The purchased code has already been used. I’ve replaced the domain for this license. You can now proceed with the installation on the new domain.
+
+You need to remove the file from the old domain first, then install it on the new domain, I have now released the license
+
+file path: resources/views/themes/green/auth/register.blade.php
+you can change cuntry code from here
+https://prnt.sc/r1GPIq8-Re0G
+
+
+From the assets directory, navigate to the upload folder. Select all the folders within it, then update their permissions. After that, change the ownership settings as shown in the reference image:
+https://prnt.sc/Q9u9GHCReo_w
+File path: assets/upload
+
+
+Everything works fine, you need to understand its system first.First, the user has to purchase the package.The user can then select the packages they purchased.
+
+It is advisable to open a single ticket for each project. Opening multiple tickets can lead to confusion, as some issues may be resolved while others remain pending. This makes it challenging for developers to accurately track and address the problems, especially when issues are interrelated. To ensure clarity and efficiency, I kindly request that you continue using a single ticket for the project. Thank you for your understanding.
+
+
+
+Your server might be blocking outgoing HTTP/HTTPS traffic, or the destination URL is blocked.
+If you're using shared hosting, outbound requests are sometimes restricted by the host.
+Some cloud/VPS setups require you to explicitly allow outbound traffic via a firewall (e.g., iptables, ufw, AWS security groups).
+Fix: Ask your hosting provider to whitelist outbound access to the verification server or check your VPS firewall settings.
+
+
+It’s possible that some custom-time installed files were removed from the bootstrap/cache directory, which may be causing the current issue. If that’s the case, please follow the steps below to reinstall properly:
+
+🛠 Installation Steps:
+Step 1:
+Visit the installation setup page:
+👉 http://your-sitename/setup-product
+
+Step 2:
+Complete the license verification, environment, and database setup.
+
+The issue occurred because "the bootstrap/cache folder was updated or the hosting was changed", which requires domain verification. Please follow the steps below to verify your domain:
+
+Access your File Manager and locate the .env file in your project root.
+
+Open the .env file and note the following credentials:
+
+DB_DATABASE – copy this value
+
+DB_USERNAME – copy this value
+
+DB_PASSWORD – copy this value
+
+Use these credentials during the setup process at:
+http://Your-Domain/setup-product
+
+
+If this seems difficult for you, please share the hosting access with us — we’ll take care of it for you.
+
+For a step-by-step video guide, you can follow this tutorial:
+https://vimeo.com/1081202430/0c1cfe572d
+
+
+
+
+language issue
+
+If you’re reporting an issue, please provide detailed information along with a screenshot so we can properly investigate. I wasn’t able to identify any problem from your previous message.
+
+I understand that the language system can be a bit confusing at first. To help you get started, please watch this step-by-step tutorial:
+🔗 How to add a new language:https://vimeo.com/1084275265/6a3844f080
+
+If any words are missing from the translation, you’ll need to add the corresponding keywords and values from the language settings.
+🔗 Watch this video for guidance:https://vimeo.com/1095216865/240af121fd
+
+After watching, feel free to try it yourself. Make sure all required content is added correctly — missing content could cause the same issues to appear again.
+
+If you face any difficulties or need further assistance, don’t hesitate to contact us. We’re here to help you.
+
+After watching, feel free to try it on your own. Please ensure that all necessary content is added correctly—if anything is missing, the previous issues may reappear.
+If you encounter any difficulties or have questions, don't hesitate to reach out. We're here to help and will do our best to support you.
+
+
+If you create a ticket for a project and include all the questions in one ticket, you will be able to easily find out which of your problems has been resolved and which have not. If you create separate tickets, it will be difficult for you and for us to find out.
+
+
+Please refer to the image at the following link to help identify the issue more easily:
+https://prnt.sc/gj3sWvHhbQxR
+
+Department and priority need to be added to the ticket system
+This feature is different from our main script and requires customization. We're ready to do it for you—please place a customization order before proceeding.
+
+
+
+
+you can't inactive dunamicaly from this scripit 
+
+you can remove PWA from code 
+visit this file edit this file and select all code remove and save 
+File Path:resources/views/themes/light/partials/pwa.blade.php
+
+file path:app\Http\Controllers\Auth\RegisterController.php
+find this code and remove this code and save 
+, new PhoneLength($data['phone_code'])
+https://prnt.sc/9ef04ABw4E99
+If you think it's difficult for you to troubleshoot and fix the issue, may I request access to your hosting server?
+
+You can change it from the Page's SEO section
+https://prnt.sc/8ysAKegzeNue
+
+
+Forbidden Issue:
+It appears that your server does not allow HTML data to be transmitted.
+To resolve this, please use plain text instead, as demonstrated in the following video:
+https://youtu.be/MHd-xKkF5Dc
+
+Notification Issue:
+Please ensure that your own credentials are properly configured in both the Push Notification Settings and In-App Notification Settings.
+You can refer to the example in the screenshot below for guidance:
+https://prnt.sc/7KBhsqEo-MTM
+
+
+File: app\Http\Controllers\Admin\EmailConfigController.php
+To allow email testing even when notifications are disabled, please replace the following line:
+
+$basic->email_notification !== 1
+with:
+$basic->email_notification != 1
+
+You can follow the example shown in this image: https://prnt.sc/F0VnEcS2JW0r
+
+If this change is difficult for you to apply, you may share your hosting or cPanel access and we’ll be happy to make the update for you.
+
+
+Your support period has expired on 19/06/2025. To continue receiving support, you’ll need to extend your support license.
+
+
+The system is unable to establish a connection with the mail host mail.isalys.top, which is causing a 500 error and preventing the mail functionality from working properly.
+Please double-check the SMTP credentials, mail host configuration, and ensure that the server firewall or port settings (typically port 465, 587, or 25) are not blocking the connection.
+
+
+🌟 We would be grateful for a 5-star rating!
+You can leave your review here: https://prnt.sc/YmX3YrhGvKiq
+
+Thank you so much for your support!
+
+Your support period has expired on 19/08/2025
+Please extend your support through CodeCanyon before requesting assistance, and then share your server access details.
+
+Since you are using Hostinger, you can provide us access via email at bugfinder36@gmail.com
+. Please follow the steps demonstrated in this video: https://vimeo.com/1111566971
+
+
+
+I’ve configured your cron job—it should now be working correctly. Please check and confirm.
+
+If you’re happy with our service, we’d sincerely appreciate it if you could leave us a 5-star review on CodeCanyon.
+Your support means a lot and motivates us to keep improving. Thank you!
+Thank you. Let me know if there is any problem.
+
+
+
+This is not an issue. Whenever you change the domain, you need to verify the domain.This is the domain change process, and you need to complete this process to proceed.
+
+
+
+https://prnt.sc/Ak_tXOwNyO5s
+
+
+
+
+
+
+
+
+You can't use regular license on multiple domain. we can see your current license used on this domain https://tetheryield.com
+
+Before you used on this domain usdtstaking.xyz
+
+=======
+Please note that our team is currently on vacation and support responses may be slower than usual. We’ll be back in full capacity from Saturday and will address your queries promptly.
+
+We truly appreciate your patience and understanding.
+
+
+Our script needs outbound HTTP (port 80) and (port 443)  for license verification, but it seems blocked on the server.
+Please enable outbound  (port 80) and (port 443) so the system can verify the license and work properly.
+
+
+Your server can’t open an outbound connection to port 443 (HTTPS)
+So basically — outbound HTTPS (port 443) is blocked by shared hosting firewall.
+That’s why your cURL call can’t verify the license 
+
+make this domain whitelist for verify 
+https://verify.bad-programmer.net/

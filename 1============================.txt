@@ -1,0 +1,286 @@
+1================
+resources\views\themes\light\user\automation\editor.blade.php
+contentType: "application/json",// eta add kora lagbe kichu kichu server e template database save hoy na eta na thakle
+
+
+        function designSave(json_design = null, html_design) {
+            $.ajax({
+                url: saveDesignRoute,
+                type: "POST", 
+              	contentType: "application/json",// eta add kora lagbe kichu kichu server e template database save hoy na eta na thakle
+                data: JSON.stringify({
+                    json_design: json_design,
+                    html_design: html_design,
+                    _token: '{{ csrf_token() }}'
+                }),
+                dataType: 'json',
+                success: function (result) {
+                    if (result.status == 'success') {
+
+                    }
+                },
+            });
+        }
+
+
+
+2=============================
+
+app\Http\Controllers\Admin\SupportTicketController.php
+
+cache remove korar konno artisan use korci 
+openTicket calculation er mistake chilo  query update korci
+
+use Illuminate\Support\Facades\Artisan;
+
+    public function tickets($status = 'all')
+    {
+        $ticketRecord = \Cache::get('ticketRecord');
+
+        if (!$ticketRecord) {
+            $ticketRecord = SupportTicket::selectRaw('COUNT(id) AS totalTicket')
+                ->selectRaw('SUM(CASE WHEN status = 0 THEN 1 ELSE 0 END) AS openTicket') // 0 => Open
+                ->selectRaw('IF(COUNT(id) > 0, (SUM(CASE WHEN status = 0 THEN 1 ELSE 0 END) / COUNT(id)) * 100, 0) AS openTicketPercentage')
+                ->selectRaw('SUM(CASE WHEN status = 1 THEN 1 ELSE 0 END) AS answerTicket') // 1 => Answered
+                ->selectRaw('IF(COUNT(id) > 0, (SUM(CASE WHEN status = 1 THEN 1 ELSE 0 END) / COUNT(id)) * 100, 0) AS answerTicketPercentage')
+                ->selectRaw('SUM(CASE WHEN status = 2 THEN 1 ELSE 0 END) AS repliedTicket') // 2 => Replied
+                ->selectRaw('IF(COUNT(id) > 0, (SUM(CASE WHEN status = 2 THEN 1 ELSE 0 END) / COUNT(id)) * 100, 0) AS repliedTicketPercentage')
+                ->selectRaw('SUM(CASE WHEN status = 3 THEN 1 ELSE 0 END) AS closedTicket') // 3 => Closed
+                ->selectRaw('IF(COUNT(id) > 0, (SUM(CASE WHEN status = 3 THEN 1 ELSE 0 END) / COUNT(id)) * 100, 0) AS closedTicketPercentage')
+                ->get()
+                ->toArray();
+
+            \Cache::put('ticketRecord', $ticketRecord, now()->addMinutes(10));
+        }
+
+        Artisan::call('optimize:clear');
+        return view('admin.support_ticket.list', compact('status', 'ticketRecord'));
+    }
+
+
+3=======================================
+app\Traits\Notify.php
+
+function verifyToMail() er modde
+
+
+$templateObj->template er jagay 
+
+$templateObj->email,hobe
+
+
+ if (!$templateObj && $subject == null) {
+            return false;
+        } else {
+            if ($templateObj) {
+                $message = str_replace("[[message]]", $templateObj->email, $message);   
+                if (empty($message)) {
+                    $message = $email_body;
+                }
+                foreach ($params as $code => $value) {
+                    $message = str_replace('[[' . $code . ']]', $value, $message);
+                }
+            } else {
+                $message = str_replace("[[message]]", $requestMessage, $message);
+            }
+        }
+
+4===========================================
+2fa ager ta ami thik korte pari nai pore 
+
+ai duita command calici full controller update korci 
+blade file change korci
+resources\views\themes\light\user\twoFA\index.blade.php
+ <div class="form-group mx-auto text-center my-3">
+  
+@if($previousQR)
+  <div class="mx-auto w-30">{!! $previousQR !!}</div> ekhane image chilo change korci
+@endif
+</div>
+ <div class="form-group mx-auto text-center mt-5">
+ 	<div class="mx-auto w-30">{!! $qrCodeUrl !!}</div> ekhane image chilo change korci
+ </div>
+
+
+composer require simplesoftwareio/simple-qrcode
+composer require pragmarx/google2fa
+
+
+app\Http\Controllers\FaSecurityController.php
+
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Helpers\GoogleAuthenticator;
+use App\Traits\Notify;
+use hisorange\BrowserDetect\Parser as Browser;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use PragmaRX\Google2FA\Google2FA;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
+
+class FaSecurityController extends Controller
+{
+    use Notify;
+
+    public function __construct()
+    {
+        $this->middleware(['auth']);
+        $this->middleware(function ($request, $next) {
+            $this->user = auth()->user();
+            return $next($request);
+        });
+        $this->theme = template();
+    }
+
+    public function twoStepSecurity()
+    {
+        $user = $this->user;
+        $basic = basicControl();
+        $ga = new Google2FA();
+        if (!$user->two_fa_code) {
+            $secret = $ga->generateSecretKey();
+            $user->two_fa_code = $secret;
+            $user->save();
+        } else {
+            $secret = $user->two_fa_code;
+        }
+        
+        $qrCodeUrl = QrCode::size(200)->generate($ga->getQRCodeUrl($basic->site_title, $user->email, $secret));
+        $previousCode = $user->two_fa_code ?? null;
+
+        $previousQR =  $previousCode ? QrCode::size(200)->generate($ga->getQRCodeUrl($basic->site_title, $user->email, $previousCode)) : null;
+
+        return view($this->theme . 'user.twoFA.index', compact('secret', 'qrCodeUrl', 'previousCode', 'previousQR'));
+    }
+
+    public function twoStepEnable(Request $request)
+    {
+        $user = auth()->user();
+
+        $this->validate($request, [
+            'key' => 'required',
+            'code' => 'required',
+        ]);
+        
+        $ga = new Google2FA();
+        $secret = $request->key;
+        $userCode = $request->code;
+        
+        $isValid = $ga->verifyKey($secret, $userCode);
+        
+        if ($isValid) {
+            $user['two_fa'] = 1;
+            $user['two_fa_verify'] = 1;
+            $user['two_fa_code'] = $secret; 
+            $user->save();
+        
+            $browser = new Browser();
+            $this->mail($user, 'TWO_STEP_ENABLED', [
+                'action' => 'Enabled',
+                'code' => $user->two_fa_code,
+                'ip' => request()->ip(),
+                'browser' => $browser->browserName() . ', ' . $browser->platformName(),
+                'time' => date('d M, Y h:i:s A'),
+            ]);
+        
+            return back()->with('success', 'Google Authenticator Has Been Enabled.');
+        } else {
+            return back()->with('alert', 'Wrong Verification Code.');
+        }
+    }
+
+
+    public function twoStepDisable(Request $request)
+    {
+        $this->validate($request, [
+            'code' => 'required',
+        ]);
+        
+        $user = auth()->user();
+        
+        $ga = new Google2FA();
+        
+        $secret = $user->two_fa_code;
+        
+        $userCode = $request->code;
+        
+        $isValid = $ga->verifyKey($secret, $userCode);
+        
+        if ($isValid) {
+            $user['two_fa'] = 0;
+            $user['two_fa_verify'] = 1;
+            $user['two_fa_code'] = null;
+            $user->save();
+        
+            $browser = new Browser();
+            $this->mail($user, 'TWO_STEP_DISABLED', [
+                'action' => 'Disabled',
+                'ip' => request()->ip(),
+                'browser' => $browser->browserName() . ', ' . $browser->platformName(),
+                'time' => date('d M, Y h:i:s A'),
+            ]);
+        
+            return back()->with('success', 'Google Authenticator Has Been Disabled.');
+        } else {
+            return back()->with('alert', 'Wrong Verification Code.');
+        }
+    }
+}
+
+
+
+
+
+
+
+5.==================
+app\Http\Controllers\User\HomeController.php
+ai function ta change korci 
+
+undefine $arr 
+ai error asto 
+
+
+ public function webhookDelete($code)
+    {
+        $user = auth()->user();
+        $arr = [];
+
+        if ($user->webhook_url) {
+            foreach ($user->webhook_url as $url) {
+                if ($url->code != $code) {
+                    $arr[] = [
+                        'created_at' => $url->created_at,
+                        'url' => $url->url,
+                        'code' => $url->code,
+                    ];
+                }
+            }
+        }
+        $user->webhook_url = $arr;
+        $user->save();
+        return back()->with('success', 'Webhook URL Deleted');
+    }
+
+
+6========================================
+app\Http\Controllers\Admin\SmsConfigController.php
+
+ public function smsConfigUpdate(Request $request, $method)
+er modde ai 2 line change korci karon vonage vonage credential update hoto na 
+
+$request->vonage_api_key
+ $request->vonage_api_secret
+
+
+'VONAGE_API_KEY' => $request->vonage_api_key ?? $smsControlMethod['vonage']['vonage_api_key']['value'],
+                'VONAGE_API_SECRET' => $request->vonage_api_secret ?? $smsControlMethod['vonage']['vonage_api_secret']['value'],
+
+7====================
+resources\views\admin\kyc\view.blade.php
+
+error dito
+ <h5>@lang(snake2Title($value->field_label))</h5> eta chilo change kore porer line dici
+ <h5>@lang(snake2Title($value->field_label ?? null))</h5>
