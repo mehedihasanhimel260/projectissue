@@ -1065,8 +1065,8 @@ if (!function_exists('getMailTemplateUpdate')) {
         // fallback values
         $logoUrl        = $basic->logo ? getFile($basic->logo_driver, $basic->logo) : '';
         $siteTitle      = $basic->site_title ?? 'Your Site';
-        $primaryColor   = $basic->primary_color ?? '#04B67B';
-        $secondaryColor = $basic->secondary_color ?? '#132144';
+        $primaryColor   = $basic->primary_color ?? '#C4E5DC';
+        $secondaryColor = $basic->secondary_color ?? '#2C3262';
         $currentYear    = date('Y');
 
         // new email template
