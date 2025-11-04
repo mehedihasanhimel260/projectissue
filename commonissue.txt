@@ -26,4 +26,37 @@
     }
 	
 	
+
+
+    -------------------------------------------
+use Illuminate\Support\Facades\Http;
+
+
+    $response = Http::withHeaders([
+    'x-api-key' => $gateway->parameters->api_key,
+])->get('https://api.nowpayments.io/v1/currencies');
+
+if ($response->successful()) {
+    $currencies = $response->json()['currencies'];
+
+    // Convert to uppercase + key-value format
+    $formatted = [];
+    foreach ($currencies as $currency) {
+        $formatted[strtoupper($currency)] = strtoupper($currency);
+    }
+
+    // Wrap under "1"
+    $data = [
+        "1" => (object) $formatted
+    ];
+
+    // Convert to object instead of array (important!)
+    $data = json_decode(json_encode($data));
+
+    //  dd($data); // 🔥 Now you’ll see the `+` object style like your example
+
+   Save if needed
+    $gateway->currencies = $data;
+    $gateway->save();
+}
 	
