@@ -137,6 +137,7 @@
 
 
 app/Models/InvestHistory.php
+
     public function nextReturn()
     {
         if ($this->return_period_type == "Hour") {
