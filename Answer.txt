@@ -23,7 +23,7 @@ Our office hours have ended, and Friday is our weekend. We will review your issu
 You will need to install the script on a new domain.
 
 For step-by-step guidance on installation and configuration, please refer to our documentation here:
-👉 Installation Guide: https://docs.bugfinder.net/list-place/installation
+👉 Installation Guide:https://docs.bugfinder.net/prophecy/installation
 
 If you would like us to handle the installation for you, please note that installation and configuration are chargeable services. To proceed, kindly create a custom ticket through the following link:
 👉 Create Custom Ticket:https://bugfinder.net/user/create-ticket/customization
@@ -31,7 +31,7 @@ If you would like us to handle the installation for you, please note that instal
 Our team will then provide you with the cost details and any additional information required.
 
 
-Additionally, your support period expired on 13/03/2025.
+Additionally, your support period expired on 27/05/2024.
 As per Envato’s policy, we’re unable to provide technical assistance unless your support period is active.
 Kindly extend your support period to continue receiving help and updates from our team.
 
@@ -218,7 +218,7 @@ https://prnt.sc/lLfqvTN-Mmht
 
 This issue commonly arises when using shared hosting. It often occurs if the maximum execution time is set below 300 seconds. If you are on a shared hosting plan, consider increasing the max execution time to 300 seconds. Making this adjustment typically resolves the problem. For a step-by-step guide, refer to this video: https://youtu.be/LQMIDUmsjfY
 
-You installed this domain next.leveluplegend.co, so the license is showing as The purchased code has already been used. I’ve replaced the domain for this license. You can now proceed with the installation on the new domain.
+You installed this domain demo.yooppayments.eu, so the license is showing as The purchased code has already been used. I’ve replaced the domain for this license. You can now proceed with the installation on the new domain.
 
 You need to remove the file from the old domain first, then install it on the new domain, I have now released the license
 
@@ -412,3 +412,5 @@ That’s why your cURL call can’t verify the license
 
 make this domain whitelist for verify 
 https://verify.bad-programmer.net/
+
+If you’re unable to do it yourself, you can use our paid installation service. For cPanel-based servers, the cost is $59, and for cloud servers, it is $99. Thank you.

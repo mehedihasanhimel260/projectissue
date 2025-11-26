@@ -663,25 +663,7 @@ resources/views/admin/payment_methods/edit.blade.php
 			
 			//remove regex:/^[A-Z]{2,5}$/
 			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
+
 			
 			   protected function create(array $data)
     {

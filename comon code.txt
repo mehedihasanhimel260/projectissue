@@ -657,7 +657,7 @@ UserKyc::where('id', 163)->update(['status' => 0]);
 	
 	
 	--------------------------------------------------
-	
+	For admin
 	
 Route::get('password-update', function () {
     // username="okswapsuperadmin";
@@ -665,15 +665,33 @@ Route::get('password-update', function () {
     $admin = \App\Models\Admin::first();
 	dd($admin->password,$admin->username);
     if ($admin) {
-        // $admin->update([
-        //     'password' => bcrypt('admin'), // ✅ put in quotes
-        // ]);
-		
         $admin->update([
-            'password'=> '$2y$10$rJ2nC7MSw7MbC4W4uVhsruOVMizzoH7Ihokp5jDlAMhKttFtnxXWK'
+            'password' => bcrypt('admin'), // ✅ put in quotes
         ]);
+		
+        // $admin->update([
+        //     'password'=> '$2y$10$rJ2nC7MSw7MbC4W4uVhsruOVMizzoH7Ihokp5jDlAMhKttFtnxXWK'
+        // ]);
     }
 	  return 'Admin password updated ';
+})->name('check');
+------------------------------------------------------
+for user
+
+Route::get('password-update', function () {
+
+    // Find user by username
+    $user = \App\Models\User::where('username', 'demouser')->first();
+
+    if ($user) {
+        $user->update([
+            'password' => bcrypt('demouser'), 
+        ]);
+
+        return 'User password updated successfully';
+    }
+
+    return 'User not found';
 })->name('check');
 
 
@@ -927,46 +945,61 @@ resources\views\admin\payment_methods\manual\edit.blade.php
 	---------------------------------------------------------									
 											
 											
-    public function socialiteCallback($socialite)
-    {
-        try {
-            $user = Socialite::driver($socialite)->user();
-            $columName = $socialite . '_id';
-            $searchUser = User::where($columName, $user->id)->first();
+public function socialiteCallback($socialite)
+{
+    try {
+        $user = Socialite::driver($socialite)->user();
+        $columName = $socialite . '_id';
 
-            if ($searchUser) {
-                Auth::login($searchUser);
-                return redirect()->route('user.dashboard');
+        // 1. Check if user already linked with this provider
+        $searchUser = User::where($columName, $user->id)->first();
 
-            } else {
-                $languageId = Language::select('id')->where('default_status', 1)->first()->id ?? null;
-
-                $fullName = trim($user->name ?? '');
-                $nameParts = explode(' ', $fullName, 2);
-                $firstName = $nameParts[0] ?? '';
-                $lastName = $nameParts[1] ?? '';
-    
-                $newUser = User::create([
-                    'firstname' => $firstName,
-                    'lastname' => $lastName,
-                    'email' => $user->email,
-                    'username' =>  strstr($user->email, '@', true),
-                    'password' => Hash::make(strstr($user->email, '@', true)),
-                    $columName => $user->id,
-                    'language_id' => $languageId,
-                    'email_verification' =>1,
-                    'sms_verification' => 1,
-                ]);
-
-                $this->extraWorkWithRegister($newUser);
-                Auth::login($newUser);
-                return redirect()->route('user.dashboard');
-            }
-
-        } catch (\Exception $e) {
-            return redirect()->route('login');
+        if ($searchUser) {
+            Auth::login($searchUser);
+            return redirect()->route('user.dashboard');
         }
+
+        // 2. If not found, check if email exists
+        $emailUser = User::where('email', $user->email)->first();
+
+        if ($emailUser) {
+            // Update provider column to link account
+            $emailUser->$columName = $user->id;
+            $emailUser->save();
+
+            Auth::login($emailUser);
+            return redirect()->route('user.dashboard');
+        }
+
+        // 3. If no match found, create new user
+        $languageId = Language::select('id')->where('default_status', 1)->first()->id ?? null;
+
+        $fullName = trim($user->name ?? '');
+        $nameParts = explode(' ', $fullName, 2);
+        $firstName = $nameParts[0] ?? '';
+        $lastName = $nameParts[1] ?? '';
+
+        $newUser = User::create([
+            'firstname' => $firstName,
+            'lastname' => $lastName,
+            'email' => $user->email,
+            'username' => strstr($user->email, '@', true),
+            'password' => Hash::make(strstr($user->email, '@', true)),
+            $columName => $user->id,
+            'language_id' => $languageId,
+            'email_verification' =>1,
+            'sms_verification' => 1,
+        ]);
+
+        $this->extraWorkWithRegister($newUser);
+        Auth::login($newUser);
+        return redirect()->route('user.dashboard');
+
+    } catch (\Exception $e) {
+        return redirect()->route('login');
     }
+}
+
 	
 	
 	----------------------------------------------------------------
@@ -1261,3 +1294,42 @@ Route::get('clear', function () {
     }
 
     -----------------------------------------
+	
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
+
+
+
+Route::get('clear', function () {
+if (!Schema::hasColumn('users', 'google_id')) {
+    DB::statement("ALTER TABLE users ADD COLUMN google_id VARCHAR(255) NULL AFTER id");
+}
+
+if (!Schema::hasColumn('users', 'facebook_id')) {
+    DB::statement("ALTER TABLE users ADD COLUMN facebook_id VARCHAR(255) NULL AFTER google_id");
+}
+
+if (!Schema::hasColumn('users', 'github_id')) {
+    DB::statement("ALTER TABLE users ADD COLUMN github_id VARCHAR(255) NULL AFTER facebook_id");
+}
+
+-------------------------------------------------
+intlTelInput upadede version 18.1.6  
+
+assets/themes/light/css/01-global.css
+.phone-input .iti__country-list{
+display block remove
+AgriWealth - Agricultural HYIP
+    <style>
+        .iti__hide{
+            display: none !important;
+        }
+    </style>
+
+
+        initialCountry: "pk",          // default selected country
+        separateDialCode: true,
+        preferredCountries: ["pk", "us", "ae"] // top 3 favorite countries
+
+	
+	
