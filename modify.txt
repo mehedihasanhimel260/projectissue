@@ -1,0 +1,5 @@
+app\Http\Controllers\FrontendController.php
+ controller use kore use kore 
+ routes\web.php
+ resources\views\themes\light\pages\checkout.blade.php
+ ai page dynamic kore dao 

@@ -10,6 +10,10 @@ EX-RATE
 Gamers Arena 
 Prophecy 
 
+
+We manage over 100 hosting panels daily and always keep our clients’ credentials secure. Please don’t worry about this. We are an authorized company, not an individual. If you have any security concerns, you may share FTP or SFTP access instead. Thank you.
+
+
 It will be easier to understand if you refer to the image :https://prnt.sc/tXt84mG50YN0
 The issue with the mail functionality was due to the cron job not being configured. I have now set it up properly. You can refer to the video (https://youtu.be/tGg5y-Vbi9g) for details. It should be working correctly now.
 
@@ -20,20 +24,21 @@ Our office hours have ended, and Friday is our weekend. We will review your issu
 
 
 
-You will need to install the script on a new domain.
+You missed the installation step.
 
-For step-by-step guidance on installation and configuration, please refer to our documentation here:
-👉 Installation Guide:https://docs.bugfinder.net/prophecy/installation
+For step-by-step instructions on installation and configuration, please check our documentation:
+👉 Installation Guide: https://docs.bugfinder.net/gear-fixer/installation
 
-If you would like us to handle the installation for you, please note that installation and configuration are chargeable services. To proceed, kindly create a custom ticket through the following link:
-👉 Create Custom Ticket:https://bugfinder.net/user/create-ticket/customization
+If you’d like us to install it for you, please note that installation and configuration are paid services. To proceed, please create a custom ticket here:
+👉 Create Custom Ticket: https://bugfinder.net/support-ticket?department=customization
 
-Our team will then provide you with the cost details and any additional information required.
+Our team will then share the cost details and any other required information.
 
 
-Additionally, your support period expired on 27/05/2024.
-As per Envato’s policy, we’re unable to provide technical assistance unless your support period is active.
-Kindly extend your support period to continue receiving help and updates from our team.
+Additionally, your support period expired on 17/08/2025. 
+According to Envato’s policy, we’re unable to provide technical assistance once the support period has ended.
+To continue receiving technical support and future updates from our team, please extend your support period. Any issues related to the script must be addressed while the support period is active.
+We have reviewed and resolved this issue for you as a courtesy. For any future assistance, please ensure that your support period is renewed.
 
 
 
@@ -218,7 +223,7 @@ https://prnt.sc/lLfqvTN-Mmht
 
 This issue commonly arises when using shared hosting. It often occurs if the maximum execution time is set below 300 seconds. If you are on a shared hosting plan, consider increasing the max execution time to 300 seconds. Making this adjustment typically resolves the problem. For a step-by-step guide, refer to this video: https://youtu.be/LQMIDUmsjfY
 
-You installed this domain demo.yooppayments.eu, so the license is showing as The purchased code has already been used. I’ve replaced the domain for this license. You can now proceed with the installation on the new domain.
+You installed this domain lavender-fox-841875.hostingersite.com, so the license is showing as The purchased code has already been used. I’ve replaced the domain for this license. You can now proceed with the installation on the new domain.
 
 You need to remove the file from the old domain first, then install it on the new domain, I have now released the license
 
@@ -347,10 +352,9 @@ You can follow the example shown in this image: https://prnt.sc/F0VnEcS2JW0r
 If this change is difficult for you to apply, you may share your hosting or cPanel access and we’ll be happy to make the update for you.
 
 
-Your support period has expired on 19/06/2025. To continue receiving support, you’ll need to extend your support license.
 
 
-The system is unable to establish a connection with the mail host mail.isalys.top, which is causing a 500 error and preventing the mail functionality from working properly.
+The system is unable to establish a connection with your mail host , which is causing a 500 error and preventing the mail functionality from working properly.
 Please double-check the SMTP credentials, mail host configuration, and ensure that the server firewall or port settings (typically port 465, 587, or 25) are not blocking the connection.
 
 
@@ -359,8 +363,6 @@ You can leave your review here: https://prnt.sc/YmX3YrhGvKiq
 
 Thank you so much for your support!
 
-Your support period has expired on 19/08/2025
-Please extend your support through CodeCanyon before requesting assistance, and then share your server access details.
 
 Since you are using Hostinger, you can provide us access via email at bugfinder36@gmail.com
 . Please follow the steps demonstrated in this video: https://vimeo.com/1111566971
@@ -410,3 +412,15 @@ make this domain whitelist for verify
 https://verify.bad-programmer.net/
 
 If you’re unable to do it yourself, you can use our paid installation service. For cPanel-based servers, the cost is $59, and for cloud servers, it is $99. Thank you.
+
+
+It’s possible that your server has my country blocked, or my IP address is blocked, which is why I am unable to log in and receiving the message: “The login is invalid.” My IP address is 103.54.149.213 Please inform your provider and request that they whitelist my IP.
+
+
+
+This issue occurs due to the server. When the server is updated for any reason, the domain verification data may be deleted. This is not caused by the script, and the issue does not originate from our end.
+As a solution, we can implement a backup system for the domain verification data so that if it is deleted during a server update, it will be automatically restored. The issue would be fixed automatically within seconds.
+If you provide server access, we will be able to set this up for you.
+
+
+Please share screenshots of the issue. Joining via TeamViewer or Google Meet session with our developers is a paid service. Please let us know if you would like to proceed. Thank you.

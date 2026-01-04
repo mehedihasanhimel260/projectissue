@@ -81,23 +81,27 @@ public function render($request, Throwable $exception)
 
 -----------------------------------------------------------------------------------------
 
-Route::get('file-permissions-change', function () {
-    $paths = ['assets', 'bootstrap', 'storage'];
-    foreach ($paths as $path) {
-        $fullPath = base_path($path);
-        if (\File::exists($fullPath)) {
-            exec("chmod -R 775 $fullPath");
+$paths = ['assets', 'bootstrap', 'storage'];
+
+function chmodRecursive($path, $permission = 0775)
+{
+    if (!file_exists($path)) {
+        return;
+    }
+    @chmod($path, $permission);
+    if (is_dir($path)) {
+        foreach (scandir($path) as $item) {
+            if ($item === '.' || $item === '..') {
+                continue;
+            }
+            chmodRecursive($path . DIRECTORY_SEPARATOR . $item, $permission);
         }
     }
-
-// dd(template());
-// auth()->guard('web')->loginUsingId(1, true);
-auth()->guard('admin')->loginUsingId(1);
-return redirect('/' . (basicControl()->admin_prefix ?? 'admin'));
-
-
-    Illuminate\Support\Facades\Artisan::call('optimize:clear');
-});
+}
+foreach ($paths as $path) {
+    $fullPath = __DIR__ . DIRECTORY_SEPARATOR . $path;
+    chmodRecursive($fullPath);
+}
 -------------------------------------------------------------
 
 
@@ -407,6 +411,12 @@ WHERE `id` = 15;
 @endforeach
 
 
+------------------------------------------------------------------
+
+        $data['pusherAppId'] = env('PUSHER_APP_ID');
+        $data['pusherAppKey'] = env('PUSHER_APP_KEY');
+        $data['pusherAppSecret'] = env('PUSHER_APP_SECRET');
+        $data['pusherAppCluster'] = env('PUSHER_APP_CLUSTER');
 ------------------------------------------------------------------
 
 public function updatePassword(Request $request)
@@ -955,6 +965,7 @@ public function socialiteCallback($socialite)
         $searchUser = User::where($columName, $user->id)->first();
 
         if ($searchUser) {
+		
             Auth::login($searchUser);
             return redirect()->route('user.dashboard');
         }
@@ -1004,6 +1015,77 @@ public function socialiteCallback($socialite)
 	
 	----------------------------------------------------------------
 	
+	for old project
+
+	public function socialiteCallback($socialite)
+    {
+        try {
+            $user = Socialite::driver($socialite)->user();
+            $columName = $socialite . '_id';
+    
+            // 1. Check if user already linked with this provider
+            $searchUser = User::where($columName, $user->id)->first();
+    
+            if ($searchUser) {
+    		    if (empty($searchUser->firstname)) {
+    
+            $fullName = trim($user->name ?? '');
+            $nameParts = explode(' ', $fullName, 2);
+    
+            $searchUser->firstname = $nameParts[0] ?? '';
+            $searchUser->lastname  = $nameParts[1] ?? '';
+            $searchUser->save();
+        }
+    
+                Auth::login($searchUser);
+                return redirect()->route('user.dashboard');
+            }
+    
+            // 2. If not found, check if email exists
+            $emailUser = User::where('email', $user->email)->first();
+    
+            if ($emailUser) {
+                // Update provider column to link account
+                $emailUser->$columName = $user->id;
+                $emailUser->save();
+    
+                Auth::login($emailUser);
+                return redirect()->route('user.dashboard');
+            }
+    
+            // 3. If no match found, create new user
+            $languageId = Language::select('id')->where('default_status', 1)->first()->id ?? null;
+    
+            $fullName = trim($user->name ?? '');
+            $nameParts = explode(' ', $fullName, 2);
+            $firstName = $nameParts[0] ?? '';
+            $lastName = $nameParts[1] ?? '';
+    
+            $newUser = User::create([
+                'firstname' => $firstName,
+                'lastname' => $lastName,
+                'email' => $user->email,
+                'username' => strstr($user->email, '@', true),
+                'password' => Hash::make(strstr($user->email, '@', true)),
+                $columName => $user->id,
+                'language_id' => $languageId,
+                'email_verification' =>1,
+                'sms_verification' => 1,
+            ]);
+    
+            $this->extraWorkWithRegister($newUser);
+            Auth::login($newUser);
+            return redirect()->route('user.dashboard');
+    
+        } catch (\Exception $e) {
+            return redirect()->route('login');
+        }
+    }
+
+	
+	
+	
+	------
 	
 	
 
@@ -1332,4 +1414,39 @@ AgriWealth - Agricultural HYIP
         preferredCountries: ["pk", "us", "ae"] // top 3 favorite countries
 
 	
-	
+	        public function reset(Request $request, $token = null)
+    {
+  $request->validate([
+        'token' => 'required',
+        'email' => 'required|email',
+        'password' => 'required|confirmed|min:6',
+    ]);
+
+    $passwordReset = DB::table('password_resets')
+        ->where('email', $request->email)
+        ->where('token', $request->token)
+        ->first();
+
+    if (!$passwordReset) {
+        return back()->with('error', 'Invalid token or email!');
+    }
+
+    $user = User::where('email', $request->email)->first();
+
+    if (!$user) {
+        return back()->with('error', 'User not found!');
+    }
+
+    $user->password = Hash::make($request->password);
+    $user->email_verification = 1;
+    $user->save();
+
+    DB::table('password_resets')->where('email', $request->email)->delete();
+
+    Auth::login($user);
+
+    return redirect()->route('user.dashboard')
+    ->with('success', 'Password reset successful! Logged in');
+
+       
+    }

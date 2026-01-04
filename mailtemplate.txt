@@ -8,7 +8,7 @@
     <!-- Header -->
     <tr>
       <td style="text-align: center; padding: 30px 20px 10px; background-color: #C4E5DC;">
-        <img src="https://jmkstemcell.ai/assets/upload/logo/FNdjdUeUs7gLVm2eDr24iMTDJOmyHJ.webp" alt="Agrocash Logo" style="max-width: 150px;">
+        <img src="https://test.taotech.com.ng/assets/upload/logo/qxUihrEwpOxBKaTvJGXGzj8wUrFN4G.png" alt="Agrocash Logo" style="max-width: 150px;">
       </td>
     </tr>
 
@@ -61,13 +61,16 @@ MAIL_MAILER=smtp
 MAIL_HOST=smtp.gmail.com
 MAIL_PORT=465
 MAIL_USERNAME="bugfinder36@gmail.com"
-MAIL_PASSWORD="govd jgsq bnek kkql"
+MAIL_PASSWORD="wumn eyjb lkug giaf"
 MAIL_ENCRYPTION=ssl
 MAIL_FROM_ADDRESS="bugfinder36@gmail.com"
 MAIL_FROM_NAME="BugFinder"
 
-Your account info@omnimarkets.company has been setup. In your e-mail program, use:
-Username:	info@omnimarkets.company
-Password:	4M3rd7qzq453xzCrAP9S
-POP/IMAP Server:	mail.omnimarkets.company
-SMTP Server:	mail.omnimarkets.company port 587
+MAIL_MAILER=smtp
+MAIL_HOST=mail.igetnotice.com
+MAIL_PORT=587
+MAIL_USERNAME=support@igetnotice.com
+MAIL_PASSWORD="070Tkb55"
+MAIL_ENCRYPTION="tls"
+MAIL_FROM_ADDRESS=support@igetnotice.com
+MAIL_FROM_NAME="iGetNotice Team"
