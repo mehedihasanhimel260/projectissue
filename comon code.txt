@@ -1569,6 +1569,7 @@ AgriWealth - Agricultural HYIP
 
 --------------------------------------------------------------------------------
 	
+<<<<<<< HEAD
 public function reset(Request $request, $token = null)
     {
   $request->validate([
@@ -1646,3 +1647,6 @@ Route::get('/db-download', function () {
     return response()->download($filePath)->deleteFileAfterSend(true);
 });
 --------------------------------------------------------------
+=======
+	
+>>>>>>> 93046db9909286df1819f508a80fb19ebbb6eddb

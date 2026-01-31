@@ -264,6 +264,10 @@ Visit the installation setup page:
 Step 2:
 Complete the license verification, environment, and database setup.
 
+
+
+We cannot remove or disable the license, as there is no available option on our end to do so. This issue typically occurs for a few reasons. If the server firewall is updated and an outbound port becomes blocked, or if your system’s bootstrap or cache folder is updated for any reason, the license may need to be re-verified.
+
 The issue occurred because "the bootstrap/cache folder was updated or the hosting was changed", which requires domain verification. Please follow the steps below to verify your domain:
 
 Access your File Manager and locate the .env file in your project root.
