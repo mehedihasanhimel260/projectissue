@@ -1,0 +1,112 @@
+public function updateBalanceUpdate(Request $request, $id)
+{
+    $request->validate([
+        'amount' => 'required|numeric|min:1'
+    ]);
+
+    DB::beginTransaction();
+    try {
+
+        $user = User::where('id', $id)->firstOr(function () {
+            throw new \Exception('User not found!');
+        });
+
+        $walletType = 'wallet';
+
+        // current balance detect
+        if ($request->balance_type == 1) {
+            $currentBalance = $user->balance;
+        } else {
+            $walletType = 'profit';
+            $currentBalance = $user->profit_balance;
+        }
+
+        // add or deduct
+        if ($request->balance_operation == 1) {
+            $newBalance = $currentBalance + $request->amount;
+        } else {
+            if ($request->amount > $currentBalance) {
+                return back()->with('error', 'Insufficient Balance to deducted.');
+            }
+            $newBalance = $currentBalance - $request->amount;
+        }
+
+        // update user balance
+        if ($request->balance_type == 1) {
+            $user->balance = $newBalance;
+        } else {
+            $user->profit_balance = $newBalance;
+        }
+        $user->save();
+
+        /* ================= TRANSACTION ================= */
+
+        if ($request->balance_operation == 1) {
+
+            // fund create only for add
+            $fund = new Fund();
+            $fund->user_id = $user->id;
+            $fund->percentage_charge = 0;
+            $fund->fixed_charge = 0;
+            $fund->charge = 0;
+            $fund->amount = getAmount($request->amount);
+            $fund->status = 1;
+            $fund->save();
+
+            $transaction = new Transaction();
+            $transaction->user_id = $user->id;
+            $transaction->amount = getAmount($request->amount);
+            $transaction->balance = getAmount($newBalance);
+            $transaction->charge = 0;
+            $transaction->trx_type = '+';
+            $transaction->remarks = "Add Balance to $walletType";
+            $transaction->trx_id = $fund->transaction;
+            $transaction->wallet_type = $walletType;
+            $fund->transactional()->save($transaction);
+
+            $notifyKey = 'ADD_BALANCE';
+
+        } else {
+
+            $transaction = new Transaction();
+            $transaction->user_id = $user->id;
+            $transaction->amount = getAmount($request->amount);
+            $transaction->balance = getAmount($newBalance);
+            $transaction->charge = 0;
+            $transaction->trx_type = '-';
+            $transaction->remarks = "Deduction Balance from $walletType";
+            $transaction->wallet_type = $walletType;
+            $transaction->save();
+
+            $notifyKey = 'DEDUCTED_BALANCE';
+        }
+
+        /* ================= NOTIFICATION ================= */
+
+        $msg = [
+            'amount' => currencyPosition($request->amount),
+            'main_balance' => currencyPosition($user->balance),
+            'transaction' => $transaction->trx_id
+        ];
+
+        $action = [
+            "link" => route('user.transaction.list'),
+            "icon" => "fa fa-money-bill-alt text-white"
+        ];
+
+        $firebaseAction = route('user.transaction.list');
+
+        $this->userFirebasePushNotification($user, $notifyKey, $msg, $firebaseAction);
+        $this->userPushNotification($user, $notifyKey, $msg, $action);
+        $this->sendMailSms($user, $notifyKey, $msg);
+
+        DB::commit();
+        return redirect()
+            ->route('admin.user.transaction', $user->id)
+            ->with('success', 'Balance Updated Successfully.');
+
+    } catch (\Exception $exp) {
+        DB::rollBack();
+        return back()->with('error', $exp->getMessage());
+    }
+}

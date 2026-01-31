@@ -35,22 +35,27 @@ If you’d like us to install it for you, please note that installation and conf
 Our team will then share the cost details and any other required information.
 
 
-Additionally, your support period expired on 17/08/2025. 
-According to Envato’s policy, we’re unable to provide technical assistance once the support period has ended.
-To continue receiving technical support and future updates from our team, please extend your support period. Any issues related to the script must be addressed while the support period is active.
+
+You are missing the final step of the installation, which is the domain verification step.
+Please follow the documentation and complete step 3: https://docs.bugfinder.net/smm-matrix/installation
+
+You can also watch the video tutorial here: https://youtu.be/mJTDtduwx9I
+
+If this is difficult for you, please grant hPanel access and add our email bugfinder36@gmail.com
+. We will handle it for you.
+
+
+Your support period expired on 07/10/2025. 
+Under Envato’s policy, we’re unable to provide technical assistance after the support period ends. To continue receiving technical support and future updates, please extend your support period.
 We have reviewed and resolved this issue for you as a courtesy. For any future assistance, please ensure that your support period is renewed.
 
 
 
 
 
-Could you please provide access to your hosting server so I can investigate and resolve the issue?
-
+Could you please provide cPanel access to your hosting server so I can investigate and resolve the issue?
 Kindly share your hosting server credentials, allowing me to check and address the issue promptly.
-
-
 To troubleshoot and fix the issue, may I request access to your hosting server?
-
 If possible, please grant me access to your hosting server so I can look into and resolve the issue.
 
 
@@ -223,7 +228,7 @@ https://prnt.sc/lLfqvTN-Mmht
 
 This issue commonly arises when using shared hosting. It often occurs if the maximum execution time is set below 300 seconds. If you are on a shared hosting plan, consider increasing the max execution time to 300 seconds. Making this adjustment typically resolves the problem. For a step-by-step guide, refer to this video: https://youtu.be/LQMIDUmsjfY
 
-You installed this domain lavender-fox-841875.hostingersite.com, so the license is showing as The purchased code has already been used. I’ve replaced the domain for this license. You can now proceed with the installation on the new domain.
+You installed this domain mediaffy.shop, so the license is showing as The purchased code has already been used. I’ve replaced the domain for this license. You can now proceed with the installation on the new domain.
 
 You need to remove the file from the old domain first, then install it on the new domain, I have now released the license
 
@@ -400,13 +405,10 @@ Please note that our team is currently on vacation and support responses may be 
 We truly appreciate your patience and understanding.
 
 
-Our script needs outbound HTTP (port 80) and (port 443)  for license verification, but it seems blocked on the server.
-Please enable outbound  (port 80) and (port 443) so the system can verify the license and work properly.
+Our script requires outbound access on ports **80 (HTTP)** and **443 (HTTPS)** for license verification, but these ports appear to be blocked on your server. Specifically, outbound HTTPS (port 443) is blocked by the shared hosting firewall, which is why the cURL request cannot verify the license.
 
+Please contact your hosting provider to confirm whether outbound ports 80 and 443 are enabled. If they are enabled, ask them to check the firewall and remove any blocks. Once this is updated, the system should work properly.
 
-Your server can’t open an outbound connection to port 443 (HTTPS)
-So basically — outbound HTTPS (port 443) is blocked by shared hosting firewall.
-That’s why your cURL call can’t verify the license 
 
 make this domain whitelist for verify 
 https://verify.bad-programmer.net/
@@ -417,10 +419,20 @@ If you’re unable to do it yourself, you can use our paid installation service.
 It’s possible that your server has my country blocked, or my IP address is blocked, which is why I am unable to log in and receiving the message: “The login is invalid.” My IP address is 103.54.149.213 Please inform your provider and request that they whitelist my IP.
 
 
+The issue happened because the server or bootstrap/cache was updated, which removed domain verification.
+To verification it, open the .env file, copy DB_DATABASE, DB_USERNAME, and DB_PASSWORD, then run setup from
+http://your-domain/setup-product.
 
-This issue occurs due to the server. When the server is updated for any reason, the domain verification data may be deleted. This is not caused by the script, and the issue does not originate from our end.
-As a solution, we can implement a backup system for the domain verification data so that if it is deleted during a server update, it will be automatically restored. The issue would be fixed automatically within seconds.
-If you provide server access, we will be able to set this up for you.
+This is a server-side issue, not a script problem.
+We can add a backup system so domain verification auto-restores after server updates.
+If you share server access, we can set it up and the issue will auto-fix in seconds.
 
 
 Please share screenshots of the issue. Joining via TeamViewer or Google Meet session with our developers is a paid service. Please let us know if you would like to proceed. Thank you.
+
+
+The main issue is that your domain has not been verified, which is why the license keeps appearing. You can fix this yourself by completing the license verification steps.
+If the issue still persists, possible reasons include:
+Outbound ports 80 (HTTP) and 443 (HTTPS) being blocked on your server, or
+Cloudflare blocking the request (if you are using Cloudflare).
+If you’re unsure how to check this, you can share cPanel access with us. We’ll investigate, identify the exact issue, and guide you on how to resolve it easily.
