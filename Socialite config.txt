@@ -1,0 +1,136 @@
+Step‑by‑Step: Get Google Client ID & Client Secret
+1) Go to Google Cloud Console
+
+Open 👉 https://console.cloud.google.com/
+
+2) Create or Select a Project
+
+Click Select a project → New Project
+
+Name it something like: SMM Matrix OAuth
+
+3) Configure OAuth Consent Screen
+
+Go to APIs & Services → OAuth consent screen
+
+Choose External
+
+Fill basic info:
+
+App name (e.g., SMM Matrix)
+
+Support email
+
+Add your email
+
+Save & continue
+(You can skip scopes for now unless you need extra data)
+
+4) Enable Google Identity APIs
+
+Go to APIs & Services → Library
+
+Search “Google Identity Services”
+
+Click Enable
+
+5) Create OAuth 2.0 Credentials
+
+Go to APIs & Services → Credentials
+
+Click Create Credentials → OAuth Client ID
+
+Choose Application Type: Web application
+
+Name it something like: Laravel Social Login
+
+6) Add Redirect URL
+
+Under Authorized redirect URIs, add this:
+
+https://yourdomain.com/auth/callback/google
+
+
+Then click Create
+
+7) Copy Your Keys
+
+After creation, you’ll see:
+
+Client ID
+
+Client Secret
+
+Copy both.
+and past your website
+
+-----------------------------------------------------------------------
+
+Step 1: Facebook Developers Account
+
+Open 👉 Facebook Developers
+
+Login & click My Apps → Create App
+
+Choose Consumer app type → Next
+
+Name your app (e.g., SMM Matrix) → Provide your email → Create App
+
+Step 2: Add Facebook Login Product
+
+In your app dashboard, click Add Product → Facebook Login → Set Up
+
+Choose Web
+
+Enter your site URL:
+
+https://yourdomain.com/
+
+Step 3: Get App ID & App Secret
+
+Go to Settings → Basic in the dashboard
+
+Copy these:
+
+App ID → Client ID er moto
+
+App Secret → Client Secret er moto
+
+Step 4: Configure OAuth Redirect URI
+
+Go to Facebook Login → Settings
+
+Add Valid OAuth Redirect URIs:
+https://yourdomain.com/auth/callback/facebook
+
+
+Save changes
+
+
+-----------------------------------------------------------------------
+
+Step 1: Github Developer App Create
+
+Open 👉 Github Developer Settings
+
+Click OAuth Apps → New OAuth App
+
+Step 2: Fill App Info
+
+Application Name: e.g., SMM Matrix
+
+Homepage URL:
+
+https://app.smmnetwork.com.ng
+
+
+Authorization callback URL:
+
+https://yourdomain.com/auth/callback/github
+
+
+Click Register Application
+
+Step 3: Copy Keys
+
+Client ID → Use for .env
