@@ -1189,7 +1189,7 @@ public function socialiteCallback($socialite)
             $searchUser->firstname = $nameParts[0] ?? '';
             $searchUser->lastname  = $nameParts[1] ?? '';
             $searchUser->save();
-        }
+			}
     
                 Auth::login($searchUser);
                 return redirect()->route('user.dashboard');

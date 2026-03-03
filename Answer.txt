@@ -45,7 +45,7 @@ If this is difficult for you, please grant hPanel access and add our email bugfi
 . We will handle it for you.
 
 
-The support period for this license expired on 22/05/2025. You need to extend it to receive support assistance.
+The support period for this license expired on 16/11/2025. You need to extend it to receive support assistance.
 Under Envato’s policy, technical assistance cannot be provided after the support period ends. To continue receiving support and future updates, you will need to extend the support period.
 
 I understand your situation. Unfortunately, I don’t have the ability to bypass Envato’s support policy or provide official support for expired licenses.
@@ -383,9 +383,9 @@ Since you are using Hostinger, you can provide us access via email at bugfinder3
 
 I’ve configured your cron job—it should now be working correctly. Please check and confirm.
 
-If you’re happy with our service, we’d sincerely appreciate it if you could leave us a 5-star review on CodeCanyon.
-Your support means a lot and motivates us to keep improving. Thank you!
-Thank you. Let me know if there is any problem.
+If you’re happy with our service, we’d really appreciate a 5-star review on CodeCanyon. 🌟
+Every review motivates us to work even harder and deliver faster, better results for you!
+Thanks a lot for your support. And if there’s any issue, just let us know—we’re always ready to help.
 
 
 

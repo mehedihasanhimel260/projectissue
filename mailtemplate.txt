@@ -318,3 +318,14 @@ MAIL_PASSWORD="070Tkb55"
 MAIL_ENCRYPTION="tls"
 MAIL_FROM_ADDRESS=support@igetnotice.com
 MAIL_FROM_NAME="iGetNotice Team"
+
+
+
+MAIL_MAILER=smtp
+MAIL_HOST=netsavecash.com
+MAIL_PORT=465
+MAIL_USERNAME=paysecure@netsavecash.com
+MAIL_PASSWORD="pl?r05P30"
+MAIL_ENCRYPTION=ssl
+MAIL_FROM_ADDRESS=paysecure@netsavecash.com
+MAIL_FROM_NAME="Bug Admin"
